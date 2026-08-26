@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+assets-raw/
+assets-4k/
+assets-4k-jpg/
