@@ -32,7 +32,7 @@ export function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="#" className="flex items-center gap-2.5">
+        <Link href="#" className="flex h-16 items-center gap-2.5">
           <span
             className={`flex h-9 w-9 items-center justify-center rounded-lg ${
               scrolled || open ? "bg-navy-950" : "bg-white/15 backdrop-blur"
@@ -61,7 +61,7 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className={`inline-block py-2 text-sm font-semibold transition-colors ${
+              className={`inline-flex h-16 items-center text-sm font-semibold transition-colors ${
                 scrolled
                   ? "text-navy-800 hover:text-navy-950"
                   : "text-white/85 hover:text-white"
@@ -72,7 +72,7 @@ export function Navbar() {
           ))}
           <a
             href="#kontak"
-            className="rounded-full bg-gold-400 px-4 py-2 text-sm font-bold text-navy-950 transition-transform hover:bg-gold-300 active:scale-[0.98]"
+            className="inline-flex h-11 items-center rounded-full bg-gold-400 px-4 text-sm font-bold text-navy-950 transition-transform hover:bg-gold-300 active:scale-[0.98]"
           >
             Chat WhatsApp
           </a>
