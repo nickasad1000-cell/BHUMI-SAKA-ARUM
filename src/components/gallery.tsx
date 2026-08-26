@@ -45,7 +45,7 @@ export function Gallery() {
           kamar mandi. Ketuk foto untuk memperbesar.
         </p>
 
-        <div className="mt-10 grid auto-rows-[180px] grid-cols-2 gap-3 sm:auto-rows-[220px] md:grid-cols-4 md:gap-4">
+        <div className="mt-10 grid auto-rows-[180px] grid-flow-dense grid-cols-2 gap-3 sm:auto-rows-[220px] md:grid-cols-4 md:gap-4">
           {GALLERY.map((photo, i) => (
             <button
               key={photo.src}

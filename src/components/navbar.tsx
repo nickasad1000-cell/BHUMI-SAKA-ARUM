@@ -61,7 +61,7 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className={`text-sm font-semibold transition-colors ${
+              className={`inline-block py-2 text-sm font-semibold transition-colors ${
                 scrolled
                   ? "text-navy-800 hover:text-navy-950"
                   : "text-white/85 hover:text-white"
@@ -83,7 +83,7 @@ export function Navbar() {
           onClick={() => setOpen(!open)}
           aria-label={open ? "Tutup menu" : "Buka menu"}
           aria-expanded={open}
-          className={`rounded-lg p-2 md:hidden ${
+          className={`rounded-lg p-3 md:hidden ${
             scrolled || open ? "text-navy-950" : "text-white"
           }`}
         >

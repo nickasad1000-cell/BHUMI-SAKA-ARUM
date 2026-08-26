@@ -32,7 +32,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
               type="button"
               onClick={() => setFloor(f)}
               aria-pressed={floor === f}
-              className={`rounded-full px-5 py-2 text-sm font-bold transition ${
+              className={`rounded-full px-5 py-3 text-sm font-bold transition ${
                 floor === f
                   ? "bg-navy-950 text-white shadow-sm"
                   : "text-navy-800 hover:text-navy-950"
@@ -85,7 +85,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full bg-navy-950 px-4 py-2 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
+                        className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
                       >
                         <WhatsappLogo size={14} weight="bold" />
                         Pesan
