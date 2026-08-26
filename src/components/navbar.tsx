@@ -61,7 +61,7 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className={`inline-flex h-16 items-center text-sm font-semibold transition-colors ${
+              className={`inline-flex h-16 items-center px-1.5 text-sm font-semibold transition-colors ${
                 scrolled
                   ? "text-navy-800 hover:text-navy-950"
                   : "text-white/85 hover:text-white"
