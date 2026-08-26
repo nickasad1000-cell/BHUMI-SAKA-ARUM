@@ -60,7 +60,7 @@ export function InstallmentCalculator() {
                 </span>
               </p>
             </div>
-            <p className="mt-3 text-xs leading-relaxed text-navy-100/50">
+            <p className="mt-3 text-xs leading-relaxed text-navy-200/70">
               *Simulasi berdasarkan pricelist. Nilai final angsuran ditentukan
               oleh bank.
             </p>

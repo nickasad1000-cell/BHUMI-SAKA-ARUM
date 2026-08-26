@@ -35,9 +35,9 @@ export function Highlights() {
                 <item.icon size={22} weight="duotone" />
               </span>
               <div>
-                <h3 className="text-sm font-bold text-navy-950">
+                <p className="text-sm font-bold text-navy-950">
                   {item.title}
-                </h3>
+                </p>
                 <p className="mt-1 text-sm leading-relaxed text-navy-800/70">
                   {item.desc}
                 </p>

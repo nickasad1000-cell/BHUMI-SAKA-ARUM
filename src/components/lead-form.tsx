@@ -149,7 +149,7 @@ export function LeadForm() {
                       className="mb-1.5 block text-sm font-bold text-navy-950"
                     >
                       Unit yang Diminati{" "}
-                      <span className="font-medium text-navy-800/50">
+                      <span className="font-medium text-navy-800/70">
                         (opsional)
                       </span>
                     </label>
@@ -166,7 +166,7 @@ export function LeadForm() {
                       className="mb-1.5 block text-sm font-bold text-navy-950"
                     >
                       Pesan{" "}
-                      <span className="font-medium text-navy-800/50">
+                      <span className="font-medium text-navy-800/70">
                         (opsional)
                       </span>
                     </label>

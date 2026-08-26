@@ -5,7 +5,7 @@ import { BUILD_SPEC, KPR_EMPLOYEE, KPR_ENTREPRENEUR } from "@/lib/data";
 function DocList({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="rounded-2xl bg-white p-6 ring-1 ring-navy-100 sm:p-8">
-      <h4 className="text-base font-extrabold text-navy-950">{title}</h4>
+      <h3 className="text-base font-extrabold text-navy-950">{title}</h3>
       <ol className="mt-4 space-y-2.5">
         {items.map((item, i) => (
           <li key={item} className="flex items-start gap-3 text-sm text-navy-800/80">
