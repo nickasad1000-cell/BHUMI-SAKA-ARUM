@@ -13,7 +13,7 @@ export function Hero() {
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-top"
+            className="object-cover object-[50%_45%] lg:object-[50%_8%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/30 lg:from-navy-950/40 lg:to-transparent" />
         </div>

@@ -109,18 +109,15 @@ export const KPR_ENTREPRENEUR = [
 export type GalleryPhoto = {
   src: string;
   alt: string;
-  span?: string;
+  wide?: boolean;
 };
 
 export const GALLERY: GalleryPhoto[] = [
-  { src: "/images/gate-sign.webp", alt: "Gerbang masuk Bhumi Saka Arum, Klampokarum Lumajang", span: "md:row-span-2" },
+  { src: "/images/gate-sign.webp", alt: "Gerbang masuk Bhumi Saka Arum, Klampokarum Lumajang" },
   { src: "/images/living-stairs.webp", alt: "Ruang tengah dua lantai dengan tangga besi dan skylight" },
-  { src: "/images/carport-roster.webp", alt: "Carport dengan dinding roster khas Bhumi Saka Arum", span: "md:col-span-2" },
-  { src: "/images/living-sofa.webp", alt: "Ruang tamu dengan pencahayaan alami" },
+  { src: "/images/carport-roster.webp", alt: "Carport dengan dinding roster khas Bhumi Saka Arum" },
   { src: "/images/bedroom.webp", alt: "Kamar tidur utama siap huni" },
   { src: "/images/kitchen.webp", alt: "Dapur dengan kompor tanam di bawah tangga" },
   { src: "/images/bathroom.webp", alt: "Kamar mandi dengan shower dan dinding granit" },
-  { src: "/images/living-wide.webp", alt: "Ruang keluarga yang luas dan terang" },
-  { src: "/images/carport-side.webp", alt: "Tampak samping carport dan halaman depan" },
-  { src: "/images/hero-a01.webp", alt: "Fasad rumah tipe A01 Bhumi Saka Arum", span: "md:row-span-2" },
+  { src: "/images/hero-a01.webp", alt: "Fasad depan rumah tipe A01 dengan carport dan pagar hitam", wide: true },
 ];

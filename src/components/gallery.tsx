@@ -45,21 +45,25 @@ export function Gallery() {
           kamar mandi. Ketuk foto untuk memperbesar.
         </p>
 
-        <div className="mt-10 grid auto-rows-[180px] grid-flow-dense grid-cols-2 gap-3 sm:auto-rows-[220px] md:grid-cols-4 md:gap-4">
+        <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {GALLERY.map((photo, i) => (
             <button
               key={photo.src}
               type="button"
               onClick={() => setActive(i)}
               aria-label={`Perbesar foto: ${photo.alt}`}
-              className={`group relative overflow-hidden rounded-xl bg-navy-50 ${photo.span ?? ""}`}
+              className={`group relative overflow-hidden rounded-xl bg-navy-50 ${
+                photo.wide ? "col-span-2 aspect-[16/11]" : "aspect-[3/4]"
+              }`}
             >
               <Image
                 src={photo.src}
                 alt={photo.alt}
                 fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className={`object-cover transition-transform duration-500 group-hover:scale-[1.04] ${
+                  photo.wide ? "object-[50%_65%]" : ""
+                }`}
               />
               <span className="absolute inset-0 bg-navy-950/0 transition-colors group-hover:bg-navy-950/15" />
             </button>
