@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import {
   formatRupiah,
@@ -13,6 +13,7 @@ import {
 
 export function Pricelist({ units }: { units: Unit[] }) {
   const [floor, setFloor] = useState<1 | 2>(2);
+  const router = useRouter();
   const rows = units.filter((u) => u.floor === floor);
   const ready = readyCount(units);
 
@@ -75,20 +76,15 @@ export function Pricelist({ units }: { units: Unit[] }) {
                   return (
                     <tr
                       key={u.unit}
-                      className={
-                        tersedia
-                          ? "cursor-pointer transition-colors hover:bg-navy-50/60"
-                          : "bg-navy-50/40"
-                      }
+                      onClick={() => router.push(`/unit/${u.unit.toLowerCase()}`)}
+                      className={`cursor-pointer transition-colors ${
+                        tersedia ? "hover:bg-navy-50/60" : "bg-navy-50/40 hover:bg-navy-50/70"
+                      }`}
                     >
                       <td className="px-5 py-3.5 font-extrabold text-navy-950">
-                        {tersedia ? (
-                          <Link href={`/unit/${u.unit.toLowerCase()}`} className="hover:underline">
-                            {u.unit}
-                          </Link>
-                        ) : (
-                          u.unit
-                        )}
+                        <span className="underline decoration-navy-200 decoration-2 underline-offset-4 group-hover:decoration-gold-400">
+                          {u.unit}
+                        </span>
                       </td>
                       <td className="px-5 py-3.5 text-navy-800/80">
                         {String(u.land_length).replace(".", ",")} ×{" "}
@@ -113,7 +109,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
                           </span>
                         )}
                       </td>
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="px-5 py-3.5 text-right" onClick={(e) => e.stopPropagation()}>
                         {tersedia ? (
                           <a
                             href={waLink(
@@ -133,7 +129,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
                             )}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-navy-100 px-4 py-2.5 text-xs font-semibold text-navy-800/60 transition hover:border-navy-200 hover:text-navy-800"
+                            className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-navy-100 bg-white px-4 py-2.5 text-xs font-semibold text-navy-800/60 transition hover:border-navy-200 hover:text-navy-800"
                           >
                             Tanya Unit Lain
                           </a>
