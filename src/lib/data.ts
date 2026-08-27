@@ -16,6 +16,22 @@ export function formatRupiah(value: number) {
   }).format(value);
 }
 
+export type UnitStatus = "tersedia" | "terjual";
+
+/** Unit yang sudah TERJUAL sesuai siteplan terbaru. */
+const SOLD = new Set([
+  "A2", "A3", "A5",
+  "B1", "B2", "B3", "B4", "B5",
+  "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
+]);
+
+export function unitStatus(u: { unit: string }): UnitStatus {
+  return SOLD.has(u.unit.toUpperCase()) ? "terjual" : "tersedia";
+}
+
+export const isReady = (u: { unit: string }) => unitStatus(u) === "tersedia";
+export const readyCount = (units: { unit: string }[]) => units.filter(isReady).length;
+
 export type Unit = {
   unit: string;
   blok: string;

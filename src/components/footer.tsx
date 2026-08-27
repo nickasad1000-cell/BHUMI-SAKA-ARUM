@@ -66,7 +66,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row">
-          <p>© 2026 {COMPANY}. Seluruh hak cipta dilindungi.</p>
+          <p>© {new Date().getFullYear()} {COMPANY}. Seluruh hak cipta dilindungi.</p>
           <p>Harga dan ketersediaan unit dapat berubah sewaktu-waktu.</p>
         </div>
       </div>

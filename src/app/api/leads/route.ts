@@ -1,7 +1,27 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
+/** Rate limit sederhana per-IP (best-effort; reset saat instance cold-start). */
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const prev = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (prev.length >= RATE_LIMIT) {
+    hits.set(ip, prev);
+    return true;
+  }
+  prev.push(now);
+  hits.set(ip, prev);
+  return false;
+}
+
 export async function POST(request: Request) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+
   let body: unknown;
   try {
     body = await request.json();
@@ -9,10 +29,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Body tidak valid" }, { status: 400 });
   }
 
-  const { name, phone, unit_interest, message } = (body ?? {}) as Record<
-    string,
-    unknown
-  >;
+  const data = (body ?? {}) as Record<string, unknown>;
+  const { name, phone, unit_interest, message, website } = data;
+
+  // Honeypot anti-bot: field tersembunyi harus kosong. Balas sukses palsu.
+  if (typeof website === "string" && website.trim()) {
+    return NextResponse.json({ ok: true }, { status: 201 });
+  }
 
   const cleanName = typeof name === "string" ? name.trim() : "";
   const cleanPhone = typeof phone === "string" ? phone.trim() : "";
@@ -28,6 +51,13 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "Nomor WhatsApp tidak valid" },
       { status: 400 }
+    );
+  }
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Terlalu banyak percobaan. Coba beberapa menit lagi." },
+      { status: 429 }
     );
   }
 
@@ -51,10 +81,8 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json(
-      { error: "Gagal menyimpan data" },
-      { status: 500 }
-    );
+    console.error("[api/leads] Database insert error:", error.message);
+    return NextResponse.json({ error: "Gagal menyimpan data" }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true }, { status: 201 });

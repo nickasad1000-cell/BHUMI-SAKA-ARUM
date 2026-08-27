@@ -21,7 +21,15 @@ export function LeadForm() {
       phone: String(fd.get("phone") || "").trim(),
       unit_interest: String(fd.get("unit_interest") || "") || null,
       message: String(fd.get("message") || "").trim() || null,
+      website: String(fd.get("website") || "").trim() || null,
     };
+
+    // Honeypot terisi → diam-diam anggap sukses agar bot berhenti
+    if (payload.website) {
+      setStatus("success");
+      form.reset();
+      return;
+    }
 
     if (payload.name.length < 2 || payload.phone.replace(/\D/g, "").length < 8) {
       setStatus("error");
@@ -176,6 +184,18 @@ export function LeadForm() {
                       rows={3}
                       placeholder="Contoh: Saya ingin tanya syarat KPR pegawai…"
                       className={`${inputCls} resize-none`}
+                    />
+                  </div>
+
+                  {/* Honeypot anti-bot — tak terlihat manusia */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="lead-website">Website</label>
+                    <input
+                      id="lead-website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
                     />
                   </div>
 

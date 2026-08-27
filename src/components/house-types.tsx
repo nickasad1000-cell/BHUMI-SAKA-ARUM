@@ -1,14 +1,14 @@
-import Image from "next/image";
 import { Bed, Bathtub, ArrowsOut, CheckCircle } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "./reveal";
+import { ZoomImage } from "./photo-grid";
 import { SPEC_FLOOR_1, SPEC_FLOOR_2, formatRupiah, INSTALLMENTS } from "@/lib/data";
 
 const TYPES = [
   {
     label: "Tipe Lantai 1",
     title: "Type 36 · Lantai 1",
-    image: "/images/living-sofa.webp",
-    alt: "Ruang tamu rumah tipe lantai 1",
+    image: "/images/living-lantai1.webp",
+    alt: "Interior rumah tipe lantai 1 Bhumi Saka Arum",
     specs: SPEC_FLOOR_1,
     installment: INSTALLMENTS[2].monthly,
   },
@@ -42,12 +42,12 @@ export function HouseTypes() {
             <Reveal key={t.label} delay={i * 0.1}>
               <article className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-navy-100 transition-shadow hover:shadow-lg">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
+                  <ZoomImage
                     src={t.image}
                     alt={t.alt}
-                    fill
+                    className="h-full w-full rounded-none"
+                    imgClassName="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
                   <span className="absolute left-4 top-4 rounded-full bg-navy-950/85 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur">
                     {t.label}

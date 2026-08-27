@@ -1,6 +1,12 @@
-import Image from "next/image";
 import { Reveal } from "./reveal";
-import { BUILD_SPEC, KPR_EMPLOYEE, KPR_ENTREPRENEUR } from "@/lib/data";
+import { ZoomImage } from "./photo-grid";
+import {
+  BUILD_SPEC,
+  FALLBACK_UNITS,
+  KPR_EMPLOYEE,
+  KPR_ENTREPRENEUR,
+  isReady,
+} from "@/lib/data";
 
 function DocList({ title, items }: { title: string; items: string[] }) {
   return (
@@ -21,6 +27,8 @@ function DocList({ title, items }: { title: string; items: string[] }) {
 }
 
 export function SitePlan() {
+  const ready = FALLBACK_UNITS.filter(isReady).length;
+
   return (
     <section id="siteplan" className="scroll-mt-20 bg-paper">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
@@ -29,20 +37,35 @@ export function SitePlan() {
             Site plan &amp; persyaratan KPR
           </h2>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-            21 unit pada Blok A, B, dan C. Pilih posisi yang paling sesuai —
-            tersedia juga rumah hook/pojok.
+            21 unit pada Blok A, B, dan C — unit yang disilang pada site plan
+            sudah terjual. Tersedia juga rumah hook/pojok.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-bold text-navy-900">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Ready {ready} dari {FALLBACK_UNITS.length} unit
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
+              <span className="h-2 w-2 rounded-full bg-red-500" />
+              Terjual {FALLBACK_UNITS.length - ready}
+            </span>
           </p>
         </Reveal>
 
         <Reveal delay={0.08}>
-          <figure className="mt-10 overflow-hidden rounded-2xl bg-white p-3 ring-1 ring-navy-100 sm:p-5">
-            <Image
+          <figure className="mt-8 overflow-hidden rounded-2xl bg-white p-3 ring-1 ring-navy-100 sm:p-5">
+            <ZoomImage
               src="/images/siteplan.webp"
               alt="Site plan Bhumi Saka Arum — Blok A, B, dan C, Klampokarum Lumajang"
+              caption="Site plan Bhumi Saka Arum — unit disilang = terjual"
+              className="w-full"
+              imgClassName="h-auto w-full rounded-lg object-cover"
               width={1920}
               height={1358}
               sizes="(max-width: 1280px) 100vw, 1280px"
-              className="h-auto w-full rounded-lg"
             />
           </figure>
         </Reveal>

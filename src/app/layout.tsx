@@ -18,29 +18,25 @@ export const metadata: Metadata = {
   },
   description:
     "Perumahan rumah subsidi 2 lantai satu-satunya di Lumajang. Type 36, 2 kamar tidur, siap huni di Klampokarum — ±8 menit dari Alun-Alun Kota Lumajang. Booking hanya Rp 100 ribu.",
-  keywords: [
-    "rumah subsidi lumajang",
-    "bhumi saka arum",
-    "rumah 2 lantai subsidi",
-    "perumahan klampokarum",
-    "KPR rumah lumajang",
-  ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
     description:
       "Hunian modern 2 lantai dengan ruang lebih luas untuk keluarga Anda. Booking hanya Rp 100 ribu, gratis DP hingga pajak.",
-    url: siteUrl,
+    url: "/",
     siteName: "Bhumi Saka Arum",
     locale: "id_ID",
     type: "website",
-    images: [{ url: "/images/og-image.webp", width: 1200, height: 630 }],
+    images: [{ url: "/images/og-image.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
     description:
       "Hunian modern 2 lantai siap huni di Klampokarum, Lumajang. Booking hanya Rp 100 ribu.",
-    images: ["/images/og-image.webp"],
+    images: ["/images/og-image.jpg"],
   },
 };
 

@@ -9,6 +9,7 @@ import { Gallery } from "@/components/gallery";
 import { LocationSection } from "@/components/location";
 import { LeadForm } from "@/components/lead-form";
 import { Footer, FloatingWa } from "@/components/footer";
+import { ScrollRestorer } from "@/components/back-nav";
 import { getUnits } from "@/lib/supabase";
 
 export const revalidate = 300;
@@ -19,6 +20,7 @@ export default async function Home() {
   return (
     <>
       <Navbar />
+      <ScrollRestorer />
       <main>
         <Hero />
         <Highlights />

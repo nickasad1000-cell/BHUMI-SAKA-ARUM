@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { ScrollTo } from "@/components/scroll-to";
 import { waLink } from "@/lib/data";
 
 export function Hero() {
@@ -8,12 +11,12 @@ export function Hero() {
       <div className="grid lg:grid-cols-2">
         <div className="relative h-[46dvh] min-h-[320px] lg:h-auto lg:min-h-[calc(100dvh-0px)]">
           <Image
-            src="/images/hero-a01.webp"
-            alt="Fasad rumah tipe A01 Bhumi Saka Arum"
+            src="/images/hero-fasad.webp"
+            alt="Fasad taman depan unit Bhumi Saka Arum, Klampokarum Lumajang"
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-[50%_45%] lg:object-[50%_8%]"
+            className="object-cover object-[50%_45%] lg:object-[50%_40%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/30 lg:from-navy-950/40 lg:to-transparent" />
         </div>
@@ -44,12 +47,12 @@ export function Hero() {
                 <WhatsappLogo size={18} weight="bold" />
                 Chat WhatsApp
               </a>
-              <a
-                href="#harga"
+              <ScrollTo
+                target="harga"
                 className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/60 active:scale-[0.98]"
               >
                 Lihat Pricelist
-              </a>
+              </ScrollTo>
             </div>
           </div>
         </div>

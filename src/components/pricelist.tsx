@@ -1,12 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import { formatRupiah, waLink, type Unit } from "@/lib/data";
+import {
+  formatRupiah,
+  isReady,
+  readyCount,
+  waLink,
+  type Unit,
+} from "@/lib/data";
 
 export function Pricelist({ units }: { units: Unit[] }) {
   const [floor, setFloor] = useState<1 | 2>(2);
   const rows = units.filter((u) => u.floor === floor);
+  const ready = readyCount(units);
 
   return (
     <section id="harga" className="scroll-mt-20 bg-white">
@@ -21,11 +29,16 @@ export function Pricelist({ units }: { units: Unit[] }) {
               {formatRupiah(166_000_000)}
             </strong>{" "}
             — pilih unit, lalu bayar peningkatan mutu kualitas sebagai uang
-            muka.
+            muka. Klik baris unit untuk melihat detail lengkap.
           </p>
         </div>
 
-        <div className="mt-8 inline-flex rounded-full bg-navy-50 p-1">
+        <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-navy-50 px-4 py-2 text-sm font-bold text-navy-900">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          Ready {ready} dari {units.length} unit
+        </p>
+
+        <div className="mt-4 inline-flex rounded-full bg-navy-50 p-1">
           {([2, 1] as const).map((f) => (
             <button
               key={f}
@@ -57,42 +70,78 @@ export function Pricelist({ units }: { units: Unit[] }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-navy-100 bg-white">
-                {rows.map((u) => (
-                  <tr key={u.unit} className="transition-colors hover:bg-navy-50/60">
-                    <td className="px-5 py-3.5 font-extrabold text-navy-950">
-                      {u.unit}
-                    </td>
-                    <td className="px-5 py-3.5 text-navy-800/80">
-                      {String(u.land_length).replace(".", ",")} ×{" "}
-                      {String(u.land_width).replace(".", ",")} m
-                    </td>
-                    <td className="px-5 py-3.5 text-navy-800/80">
-                      {String(u.land_area).replace(".", ",")} m²
-                    </td>
-                    <td className="px-5 py-3.5 font-bold text-navy-950">
-                      {formatRupiah(u.dp_price)}
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        Tersedia
-                      </span>
-                    </td>
-                    <td className="px-5 py-3.5 text-right">
-                      <a
-                        href={waLink(
-                          `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                {rows.map((u) => {
+                  const tersedia = isReady(u);
+                  return (
+                    <tr
+                      key={u.unit}
+                      className={
+                        tersedia
+                          ? "cursor-pointer transition-colors hover:bg-navy-50/60"
+                          : "bg-navy-50/40"
+                      }
+                    >
+                      <td className="px-5 py-3.5 font-extrabold text-navy-950">
+                        {tersedia ? (
+                          <Link href={`/unit/${u.unit.toLowerCase()}`} className="hover:underline">
+                            {u.unit}
+                          </Link>
+                        ) : (
+                          u.unit
                         )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
-                      >
-                        <WhatsappLogo size={14} weight="bold" />
-                        Pesan
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-5 py-3.5 text-navy-800/80">
+                        {String(u.land_length).replace(".", ",")} ×{" "}
+                        {String(u.land_width).replace(".", ",")} m
+                      </td>
+                      <td className="px-5 py-3.5 text-navy-800/80">
+                        {String(u.land_area).replace(".", ",")} m²
+                      </td>
+                      <td className="px-5 py-3.5 font-bold text-navy-950">
+                        {formatRupiah(u.dp_price)}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        {tersedia ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                            Tersedia
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                            Terjual
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-5 py-3.5 text-right">
+                        {tersedia ? (
+                          <a
+                            href={waLink(
+                              `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                            )}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
+                          >
+                            <WhatsappLogo size={14} weight="bold" />
+                            Pesan
+                          </a>
+                        ) : (
+                          <a
+                            href={waLink(
+                              `Halo, unit ${u.unit} di Bhumi Saka Arum sudah terjual. Mohon info unit yang masih tersedia.`
+                            )}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-navy-100 px-4 py-2.5 text-xs font-semibold text-navy-800/60 transition hover:border-navy-200 hover:text-navy-800"
+                          >
+                            Tanya Unit Lain
+                          </a>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
