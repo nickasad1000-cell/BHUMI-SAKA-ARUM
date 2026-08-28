@@ -11,12 +11,12 @@ export function Gallery() {
           Lihat langsung unitnya
         </h2>
         <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-          Dokumentasi asli unit show — fasad depan, interior ruang tamu, kamar
+          Dokumentasi asli unit peraga (show unit) — fasad depan, interior ruang tamu, kamar
           tidur, hingga detail kamar mandi. Ketuk foto untuk memperbesar.
         </p>
 
         <div className="mt-10">
-          <PhotoGrid photos={[...GALLERY]} />
+          <PhotoGrid photos={[...GALLERY]} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
         </div>
       </div>
     </section>

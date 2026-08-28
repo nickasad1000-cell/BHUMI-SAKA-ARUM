@@ -1,19 +1,21 @@
 import type { MetadataRoute } from "next";
-import { FALLBACK_UNITS } from "@/lib/data";
+import { getUnits } from "@/lib/supabase";
 
 const BASE = "https://bhumisakaarum.vercel.app";
+const LAST_UPDATED = new Date("2026-08-28T05:00:00Z");
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const units = await getUnits();
   return [
     {
       url: BASE,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...FALLBACK_UNITS.map((u) => ({
+    ...units.map((u) => ({
       url: `${BASE}/unit/${u.unit.toLowerCase()}`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

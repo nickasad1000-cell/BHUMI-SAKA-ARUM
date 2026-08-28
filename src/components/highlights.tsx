@@ -4,7 +4,7 @@ import { Reveal } from "./reveal";
 const ITEMS = [
   {
     icon: Tag,
-    title: "Booking Rp 100 Ribu",
+    title: "Booking Rp 100 ribu",
     desc: "Promo terbatas untuk mengunci unit pilihan Anda.",
   },
   {

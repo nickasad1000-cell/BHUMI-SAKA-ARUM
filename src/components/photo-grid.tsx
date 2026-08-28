@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { X, CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
@@ -9,6 +9,41 @@ export type LightboxPhoto = {
   src: string;
   alt: string;
 };
+
+/** Fokus masuk/keluar dialog + trap Tab di dalam dialog. */
+function useDialogFocus(isOpen: boolean) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const prevTriggerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      prevTriggerRef.current = document.activeElement as HTMLElement | null;
+      closeRef.current?.focus();
+    } else if (prevTriggerRef.current) {
+      prevTriggerRef.current.focus?.();
+      prevTriggerRef.current = null;
+    }
+  }, [isOpen]);
+
+  const trapTab = useCallback((e: KeyboardEvent) => {
+    if (e.key !== "Tab" || !dialogRef.current) return;
+    const focusables = dialogRef.current.querySelectorAll<HTMLElement>("button");
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const cur = document.activeElement;
+    if (e.shiftKey && (cur === first || !dialogRef.current.contains(cur))) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && (cur === last || !dialogRef.current.contains(cur))) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
+  return { dialogRef, closeRef, trapTab };
+}
 
 /** Grid foto + lightbox klik-perbesar (keyboard & touch friendly). */
 export function PhotoGrid({
@@ -22,6 +57,7 @@ export function PhotoGrid({
 }) {
   const [active, setActive] = useState<number | null>(null);
   const reduce = useReducedMotion();
+  const { dialogRef, closeRef, trapTab } = useDialogFocus(active !== null);
 
   const close = useCallback(() => setActive(null), []);
   const step = useCallback(
@@ -38,6 +74,7 @@ export function PhotoGrid({
       if (e.key === "Escape") close();
       if (e.key === "ArrowRight") step(1);
       if (e.key === "ArrowLeft") step(-1);
+      trapTab(e);
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -45,7 +82,7 @@ export function PhotoGrid({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [active, close, step]);
+  }, [active, close, step, trapTab]);
 
   const gridCols =
     columns === 4 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-3";
@@ -83,6 +120,7 @@ export function PhotoGrid({
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            ref={dialogRef}
             className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/95 p-4"
             onClick={close}
             role="dialog"
@@ -92,6 +130,7 @@ export function PhotoGrid({
             <button
               type="button"
               onClick={close}
+              ref={closeRef}
               aria-label="Tutup galeri"
               className="absolute right-4 top-4 rounded-full bg-white/10 p-2.5 text-white transition hover:bg-white/20"
             >
@@ -120,7 +159,7 @@ export function PhotoGrid({
                 src={photos[active].src}
                 alt={photos[active].alt}
                 fill
-                sizes="100vw"
+                sizes="(min-width: 768px) 768px, 100vw"
                 className="object-contain"
               />
               <figcaption className="absolute inset-x-0 bottom-0 rounded-lg bg-navy-950/70 px-4 py-2.5 text-center text-xs font-medium text-white backdrop-blur">
@@ -168,11 +207,14 @@ export function ZoomImage({
   sizes?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const reduce = useReducedMotion();
+  const { dialogRef, closeRef, trapTab } = useDialogFocus(open);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
+      trapTab(e);
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -180,7 +222,7 @@ export function ZoomImage({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, trapTab]);
 
   return (
     <>
@@ -208,9 +250,10 @@ export function ZoomImage({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            ref={dialogRef}
             className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/95 p-4"
             onClick={() => setOpen(false)}
             role="dialog"
@@ -220,18 +263,25 @@ export function ZoomImage({
             <button
               type="button"
               onClick={() => setOpen(false)}
+              ref={closeRef}
               aria-label="Tutup foto"
               className="absolute right-4 top-4 rounded-full bg-white/10 p-2.5 text-white transition hover:bg-white/20"
             >
               <X size={22} weight="bold" />
             </button>
             <motion.figure
-              initial={{ opacity: 0, scale: 0.97 }}
+              initial={reduce ? false : { opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               className="relative h-[86dvh] w-full max-w-5xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image src={src} alt={alt} fill sizes="100vw" className="object-contain" />
+              <Image
+                src={src}
+                alt={alt}
+                fill
+                sizes="(min-width: 1024px) 1024px, 100vw"
+                className="object-contain"
+              />
               {(caption || alt) && (
                 <figcaption className="absolute inset-x-0 bottom-0 rounded-lg bg-navy-950/70 px-4 py-2.5 text-center text-xs font-medium text-white backdrop-blur">
                   {caption ?? alt}

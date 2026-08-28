@@ -18,7 +18,7 @@ export function Hero() {
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-[50%_45%] lg:object-[50%_40%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/30 lg:from-navy-950/40 lg:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/60 lg:from-navy-950/40 lg:via-transparent lg:to-navy-950/50" />
         </div>
 
         <div className="flex items-center px-4 py-14 sm:px-8 lg:min-h-[100dvh] lg:px-14 xl:px-20">

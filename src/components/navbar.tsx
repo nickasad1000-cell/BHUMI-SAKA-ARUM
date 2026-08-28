@@ -25,6 +25,15 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-colors ${
@@ -86,6 +95,7 @@ export function Navbar() {
           onClick={() => setOpen(!open)}
           aria-label={open ? "Tutup menu" : "Buka menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
           className={`rounded-lg p-3 md:hidden ${
             scrolled || open ? "text-navy-950" : "text-white"
           }`}
@@ -95,11 +105,12 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-navy-100 bg-white px-4 pb-4 pt-2 md:hidden">
+        <div id="mobile-menu" className="border-t border-navy-100 bg-white px-4 pb-4 pt-2 md:hidden">
           {LINKS.map((l) => (
             <ScrollTo
               key={l.href}
               target={l.href}
+              onNavigate={() => setOpen(false)}
               className="block w-full py-2.5 text-left text-sm font-semibold text-navy-800"
             >
               {l.label}

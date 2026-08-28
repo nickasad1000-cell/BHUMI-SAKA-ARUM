@@ -10,14 +10,23 @@ function smoothScroll(id: string) {
 export function ScrollTo({
   target,
   className,
+  onNavigate,
   children,
 }: {
   target: string;
   className?: string;
+  onNavigate?: () => void;
   children: ReactNode;
 }) {
   return (
-    <button type="button" onClick={() => smoothScroll(target)} className={className}>
+    <button
+      type="button"
+      onClick={() => {
+        smoothScroll(target);
+        onNavigate?.();
+      }}
+      className={className}
+    >
       {children}
     </button>
   );

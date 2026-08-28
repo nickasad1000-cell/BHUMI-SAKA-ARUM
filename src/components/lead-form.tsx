@@ -45,7 +45,26 @@ export function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        let serverMsg = "";
+        try {
+          const body = await res.json();
+          serverMsg = typeof body?.error === "string" ? body.error : "";
+        } catch {}
+        if (res.status === 429) {
+          setStatus("error");
+          setErrorMsg(
+            serverMsg ||
+              "Terlalu banyak percobaan. Tunggu beberapa menit lagi atau hubungi kami via WhatsApp."
+          );
+        } else if (serverMsg) {
+          setStatus("error");
+          setErrorMsg(serverMsg);
+        } else {
+          throw new Error();
+        }
+        return;
+      }
       setStatus("success");
       form.reset();
     } catch {
@@ -57,7 +76,7 @@ export function LeadForm() {
   }
 
   const inputCls =
-    "w-full rounded-xl border border-navy-200 bg-white px-4 py-3 text-sm font-medium text-navy-950 outline-none transition placeholder:text-navy-800/40 focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20";
+    "w-full rounded-xl border border-navy-200 bg-white px-4 py-3 text-sm font-medium text-navy-950 outline-none transition placeholder:text-navy-800/55 focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20";
 
   return (
     <section id="kontak" className="scroll-mt-20 bg-white">
@@ -89,6 +108,7 @@ export function LeadForm() {
               {status === "success" ? (
                 <motion.div
                   key="success"
+                  role="status"
                   initial={reduce ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="flex flex-col items-center py-10 text-center"
@@ -104,7 +124,7 @@ export function LeadForm() {
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
-                    className="mt-6 text-sm font-bold text-navy-700 underline underline-offset-2"
+                    className="mt-6 rounded-full px-4 py-2 text-sm font-bold text-navy-700 underline underline-offset-2"
                   >
                     Kirim minat lain
                   </button>

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Bhumi Saka Arum",
   },
   description:
-    "Perumahan rumah subsidi 2 lantai satu-satunya di Lumajang. Type 36, 2 kamar tidur, siap huni di Klampokarum — ±8 menit dari Alun-Alun Kota Lumajang. Booking hanya Rp 100 ribu.",
+    "Rumah subsidi 2 lantai satu-satunya di Lumajang. Type 36, 2 kamar tidur, siap huni di Klampokarum — ±8 menit dari Alun-Alun Kota Lumajang.",
   alternates: {
     canonical: "/",
   },
@@ -29,7 +29,9 @@ export const metadata: Metadata = {
     siteName: "Bhumi Saka Arum",
     locale: "id_ID",
     type: "website",
-    images: [{ url: "/images/og-image.jpg", width: 1200, height: 630 }],
+    images: [
+      { url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -48,18 +50,13 @@ const jsonLd = {
     "Perumahan rumah subsidi 2 lantai satu-satunya di Lumajang oleh PT. Lembayung Wanantara Padha.",
   url: siteUrl,
   telephone: "+6281333372016",
+  image: `${siteUrl}/images/og-image.jpg`,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Klampokarum",
+    streetAddress: "Jl. Raya Klampokarum, Kec. Kunir",
     addressLocality: "Lumajang",
     addressRegion: "Jawa Timur",
     addressCountry: "ID",
-  },
-  offers: {
-    "@type": "Offer",
-    price: "166000000",
-    priceCurrency: "IDR",
-    availability: "https://schema.org/InStock",
   },
 };
 
@@ -71,11 +68,17 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className={`${jakarta.variable} font-sans antialiased`}>
+        <a
+          href="#konten"
+          className="sr-only z-50 rounded-full bg-navy-950 px-5 py-3 text-sm font-bold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Langsung ke konten
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <div id="konten">{children}</div>
       </body>
     </html>
   );

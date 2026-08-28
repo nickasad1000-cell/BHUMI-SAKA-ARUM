@@ -8,6 +8,14 @@ const hits = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Bersihkan entri stale agar Map tidak tumbuh tanpa batas
+  for (const [key, times] of hits) {
+    const fresh = times.filter((t) => now - t < RATE_WINDOW_MS);
+    if (fresh.length === 0) hits.delete(key);
+    else if (fresh.length !== times.length) hits.set(key, fresh);
+  }
+
   const prev = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
   if (prev.length >= RATE_LIMIT) {
     hits.set(ip, prev);
@@ -18,9 +26,34 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
+function clientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) {
+    // Pada Vercel, entri terakhir adalah IP yang di-inject platform
+    const parts = fwd.split(",").map((s) => s.trim());
+    return parts[parts.length - 1] || "unknown";
+  }
+  return request.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    return NextResponse.json(
+      { error: "Content-Type harus application/json" },
+      { status: 415 }
+    );
+  }
+
+  const ip = clientIp(request);
+
+  // Rate limit dihitung SEBELUM validasi agar spam payload tak valid ikut terhitung
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Terlalu banyak percobaan. Coba beberapa menit lagi." },
+      { status: 429, headers: { "Retry-After": "600" } }
+    );
+  }
 
   let body: unknown;
   try {
@@ -47,19 +80,21 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  if (digits.length < 8 || digits.length > 20) {
+  if (digits.length < 8 || digits.length > 16) {
     return NextResponse.json(
       { error: "Nomor WhatsApp tidak valid" },
       { status: 400 }
     );
   }
 
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Terlalu banyak percobaan. Coba beberapa menit lagi." },
-      { status: 429 }
-    );
-  }
+  const cleanUnit =
+    typeof unit_interest === "string" && unit_interest.trim()
+      ? unit_interest.trim().slice(0, 100)
+      : null;
+  const cleanMessage =
+    typeof message === "string" && message.trim()
+      ? message.trim().slice(0, 1000)
+      : null;
 
   const supabase = getSupabase();
   if (!supabase) {
@@ -72,12 +107,8 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("leads").insert({
     name: cleanName,
     phone: cleanPhone,
-    unit_interest:
-      typeof unit_interest === "string" && unit_interest.trim()
-        ? unit_interest.trim()
-        : null,
-    message:
-      typeof message === "string" && message.trim() ? message.trim() : null,
+    unit_interest: cleanUnit,
+    message: cleanMessage,
   });
 
   if (error) {

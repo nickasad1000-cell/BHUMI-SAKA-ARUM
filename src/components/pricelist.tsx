@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import {
@@ -22,15 +23,15 @@ export function Pricelist({ units }: { units: Unit[] }) {
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="max-w-xl">
           <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-            Pricelist unit
+            Pricelist Unit
           </h2>
           <p className="mt-3 text-base leading-relaxed text-navy-800/70">
             Harga rumah subsidi{" "}
             <strong className="font-bold text-navy-950">
               {formatRupiah(166_000_000)}
             </strong>{" "}
-            — pilih unit, lalu bayar peningkatan mutu kualitas sebagai uang
-            muka. Klik baris unit untuk melihat detail lengkap.
+            — pilih unit, lalu bayar peningkatan mutu kualitas sesuai unit
+            pilihan. Klik baris unit untuk melihat detail lengkap.
           </p>
         </div>
 
@@ -62,12 +63,12 @@ export function Pricelist({ units }: { units: Unit[] }) {
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
                 <tr className="bg-navy-50 text-xs font-bold uppercase tracking-wider text-navy-800">
-                  <th className="px-5 py-3.5">Unit</th>
-                  <th className="px-5 py-3.5">Uk. Tanah</th>
-                  <th className="px-5 py-3.5">Luas</th>
-                  <th className="px-5 py-3.5">Peningkatan Mutu</th>
-                  <th className="px-5 py-3.5">Status</th>
-                  <th className="px-5 py-3.5 text-right">Aksi</th>
+                  <th scope="col" className="px-5 py-3.5">Unit</th>
+                  <th scope="col" className="px-5 py-3.5">Uk. Tanah</th>
+                  <th scope="col" className="px-5 py-3.5">Luas</th>
+                  <th scope="col" className="px-5 py-3.5">Peningkatan Mutu</th>
+                  <th scope="col" className="px-5 py-3.5">Status</th>
+                  <th scope="col" className="px-5 py-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-navy-100 bg-white">
@@ -77,14 +78,17 @@ export function Pricelist({ units }: { units: Unit[] }) {
                     <tr
                       key={u.unit}
                       onClick={() => router.push(`/unit/${u.unit.toLowerCase()}`)}
-                      className={`cursor-pointer transition-colors ${
+                      className={`group cursor-pointer transition-colors ${
                         tersedia ? "hover:bg-navy-50/60" : "bg-navy-50/40 hover:bg-navy-50/70"
                       }`}
                     >
                       <td className="px-5 py-3.5 font-extrabold text-navy-950">
-                        <span className="underline decoration-navy-200 decoration-2 underline-offset-4 group-hover:decoration-gold-400">
+                        <Link
+                          href={`/unit/${u.unit.toLowerCase()}`}
+                          className="underline decoration-navy-200 decoration-2 underline-offset-4 group-hover:decoration-gold-400"
+                        >
                           {u.unit}
-                        </span>
+                        </Link>
                       </td>
                       <td className="px-5 py-3.5 text-navy-800/80">
                         {String(u.land_length).replace(".", ",")} ×{" "}
@@ -103,7 +107,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
                             Tersedia
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-700">
                             <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
                             Terjual
                           </span>
@@ -152,9 +156,9 @@ export function Pricelist({ units }: { units: Unit[] }) {
             listrik, dan sumur bor.
           </p>
           <p>
-            Tanda jadi Rp 2.500.000 (pilih unit, tidak mengurangi harga) · Rumah
-            hook/pojok +Rp 5.000.000 · Harga sewaktu-waktu dapat berubah
-            mengikuti kebijakan pemerintah.
+            Booking Rp 100 ribu · Tanda jadi Rp 2.500.000 (pilih unit, tidak
+            mengurangi harga) · Rumah hook/pojok +Rp 5.000.000 · Harga
+            sewaktu-waktu dapat berubah mengikuti kebijakan pemerintah.
           </p>
         </div>
       </div>

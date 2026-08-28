@@ -7,7 +7,6 @@ import { Footer } from "@/components/footer";
 import { PhotoGrid } from "@/components/photo-grid";
 import { BackLink } from "@/components/back-nav";
 import {
-  FALLBACK_UNITS,
   GALLERY,
   BUILD_SPEC,
   formatRupiah,
@@ -15,27 +14,33 @@ import {
   isReady,
   waLink,
 } from "@/lib/data";
+import { getUnits } from "@/lib/supabase";
+import { FloatingWa } from "@/components/footer";
 
 interface PageProps {
   params: Promise<{ kode: string }>;
 }
 
-export function generateStaticParams() {
-  return FALLBACK_UNITS.map((u) => ({ kode: u.unit.toLowerCase() }));
+const SITE = "https://bhumisakaarum.vercel.app";
+
+export async function generateStaticParams() {
+  const units = await getUnits();
+  return units.map((u) => ({ kode: u.unit.toLowerCase() }));
 }
 
-function getUnit(kode: string) {
-  return FALLBACK_UNITS.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
+async function getUnit(kode: string) {
+  const units = await getUnits();
+  return units.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { kode } = await params;
-  const u = getUnit(kode);
+  const u = await getUnit(kode);
   if (!u) return { title: "Unit tidak ditemukan" };
 
   const state = isReady(u) ? "Tersedia" : "Terjual";
   const title = `Unit ${u.unit} — Rumah Subsidi ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} Lumajang (${state})`;
-  const description = `Rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}. Status: ${state}.`;
+  const description = `Unit ${u.unit} — rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}. Status: ${state}.`;
 
   return {
     title,
@@ -49,8 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       locale: "id_ID",
       type: "website",
       images: [
-        { url: "/images/og-image.jpg", width: 1200, height: 630 },
-        { url: GALLERY[0].src },
+        { url: "/images/og-image.jpg", width: 1200, height: 630, alt: `Unit ${u.unit} Bhumi Saka Arum` },
       ],
     },
     twitter: {
@@ -64,18 +68,44 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function UnitDetailPage({ params }: PageProps) {
   const { kode } = await params;
-  const u = getUnit(kode);
+  const u = await getUnit(kode);
   if (!u) notFound();
 
   const ready = isReady(u);
   const photos = GALLERY.map((g) => ({ ...g }));
 
+  const unitLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `Rumah Subsidi Type 36 ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} — Unit ${u.unit}`,
+    description: `Rumah subsidi type 36 di Bhumi Saka Arum, Klampokarum, Kec. Kunir, Lumajang. Harga ${formatRupiah(u.house_price)}.`,
+    image: `${SITE}/images/og-image.jpg`,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IDR",
+      price: String(u.house_price),
+      availability: ready ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+      url: `${SITE}/unit/${u.unit.toLowerCase()}`,
+    },
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Pricelist", item: `${SITE}/#harga` },
+      { "@type": "ListItem", position: 2, name: `Unit ${u.unit}`, item: `${SITE}/unit/${u.unit.toLowerCase()}` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(unitLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Navbar />
       <main className="bg-paper">
         <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-28 sm:px-6 lg:px-8">
-          <nav aria-label="Breadcrumb" className="text-sm text-navy-800/60">
+          <nav aria-label="Breadcrumb" className="text-sm text-navy-800/70">
             <BackLink target="harga" className="font-semibold text-navy-800 transition-colors hover:text-navy-950">
               Pricelist
             </BackLink>
@@ -96,7 +126,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                     Tersedia
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700">
                     <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
                     Terjual
                   </span>
@@ -109,7 +139,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
 
               <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl bg-white p-6 ring-1 ring-navy-100 sm:p-8">
                 <div>
-                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/60">
+                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/70">
                     Harga Rumah
                   </dt>
                   <dd className="mt-1 text-xl font-extrabold tracking-tight text-navy-950">
@@ -117,7 +147,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/60">
+                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/70">
                     Peningkatan Mutu
                   </dt>
                   <dd className="mt-1 text-xl font-extrabold tracking-tight text-navy-950">
@@ -125,7 +155,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/60">
+                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/70">
                     Luas Tanah
                   </dt>
                   <dd className="mt-1 font-extrabold text-navy-950">
@@ -133,17 +163,17 @@ export default async function UnitDetailPage({ params }: PageProps) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/60">
+                  <dt className="text-xs font-bold uppercase tracking-wider text-navy-800/70">
                     Angsuran Mulai
                   </dt>
                   <dd className="mt-1 font-extrabold text-navy-950">
                     {formatRupiah(INSTALLMENTS[2].monthly)}/bln
-                    <span className="text-sm font-semibold text-navy-800/60"> (20 th)</span>
+                    <span className="text-sm font-semibold text-navy-800/70"> (20 th)</span>
                   </dd>
                 </div>
               </dl>
 
-              <p className="mt-4 text-xs leading-relaxed text-navy-800/60">
+              <p className="mt-4 text-xs leading-relaxed text-navy-800/70">
                 Booking Rp 100 ribu — tanda jadi Rp 2.500.000. Harga sudah termasuk AJB, balik nama &amp; pajak, provisi KPR, angsuran pertama, IMB, listrik, dan sumur bor. Rumah hook/pojok +Rp 5.000.000.
               </p>
 
@@ -193,8 +223,8 @@ export default async function UnitDetailPage({ params }: PageProps) {
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="w-full rounded-2xl object-cover ring-1 ring-navy-100"
               />
-              <p className="mt-2 text-center text-xs font-semibold text-navy-800/60">
-                Posisi Blok {u.blok} pada site plan — klik foto galeri untuk melihat seluruh unitnya
+              <p className="mt-2 text-center text-xs font-semibold text-navy-800/70">
+                Posisi Blok {u.blok} pada siteplan — klik foto galeri untuk melihat seluruh unitnya
               </p>
             </div>
           </div>
@@ -205,7 +235,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
               Foto lengkap perumahan
             </h2>
             <p className="mt-2 max-w-xl text-base leading-relaxed text-navy-800/70">
-              Fasad depan, interior ruang tamu, kamar tidur, kamar mandi, dan dapur — dokumentasi asli unit show.
+              Fasad depan, interior ruang tamu, kamar tidur, kamar mandi, dan dapur — dokumentasi asli unit peraga (show unit).
             </p>
             <div className="mt-8">
               <PhotoGrid photos={photos} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -229,6 +259,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
         </div>
       </main>
       <Footer />
+      <FloatingWa />
     </>
   );
 }

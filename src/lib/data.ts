@@ -2,7 +2,6 @@ export const WA_NUMBER = "6281333372016";
 export const WA_DISPLAY = "0813 3337 2016";
 export const COMPANY = "PT. Lembayung Wanantara Padha";
 export const HOUSE_PRICE = 166_000_000;
-export const LOCATION_LABEL = "Klampokarum, Lumajang — Jawa Timur";
 
 export function waLink(text: string) {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -25,7 +24,9 @@ const SOLD = new Set([
   "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
 ]);
 
-export function unitStatus(u: { unit: string }): UnitStatus {
+export function unitStatus(u: { unit: string; status?: string | null }): UnitStatus {
+  if (u.status === "terjual") return "terjual";
+  if (u.status === "tersedia") return "tersedia";
   return SOLD.has(u.unit.toUpperCase()) ? "terjual" : "tersedia";
 }
 
@@ -45,27 +46,27 @@ export type Unit = {
 };
 
 export const FALLBACK_UNITS: Unit[] = [
-  { unit: "C1", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 13000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C2", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 12800000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "C1", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 13000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C2", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 12800000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "C3", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10400000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C4", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10500000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C5", blok: "C", floor: 1, land_length: 12.4, land_width: 6, land_area: 74.4, dp_price: 10600000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C6", blok: "C", floor: 1, land_length: 10.7, land_width: 6, land_area: 64.2, dp_price: 14500000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C7", blok: "C", floor: 1, land_length: 10.6, land_width: 6, land_area: 63.6, dp_price: 13000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C8", blok: "C", floor: 1, land_length: 10.4, land_width: 6, land_area: 62.4, dp_price: 10000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C9", blok: "C", floor: 1, land_length: 10.2, land_width: 6, land_area: 61.2, dp_price: 7000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "C10", blok: "C", floor: 1, land_length: 10, land_width: 6.5, land_area: 65, dp_price: 16500000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "C4", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10500000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C5", blok: "C", floor: 1, land_length: 12.4, land_width: 6, land_area: 74.4, dp_price: 10600000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C6", blok: "C", floor: 1, land_length: 10.7, land_width: 6, land_area: 64.2, dp_price: 14500000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C7", blok: "C", floor: 1, land_length: 10.6, land_width: 6, land_area: 63.6, dp_price: 13000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C8", blok: "C", floor: 1, land_length: 10.4, land_width: 6, land_area: 62.4, dp_price: 10000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C9", blok: "C", floor: 1, land_length: 10.2, land_width: 6, land_area: 61.2, dp_price: 7000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "C10", blok: "C", floor: 1, land_length: 10, land_width: 6.5, land_area: 65, dp_price: 16500000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "A1", blok: "A", floor: 2, land_length: 12.5, land_width: 6.1, land_area: 76.3, dp_price: 60625000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "A2", blok: "A", floor: 2, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 57500000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "A3", blok: "A", floor: 2, land_length: 11.8, land_width: 6, land_area: 70.8, dp_price: 47000000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "A2", blok: "A", floor: 2, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 57500000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "A3", blok: "A", floor: 2, land_length: 11.8, land_width: 6, land_area: 70.8, dp_price: 47000000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "A4", blok: "A", floor: 2, land_length: 11.8, land_width: 6, land_area: 70.8, dp_price: 47000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "A5", blok: "A", floor: 2, land_length: 11.8, land_width: 6, land_area: 70.8, dp_price: 47000000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "A5", blok: "A", floor: 2, land_length: 11.8, land_width: 6, land_area: 70.8, dp_price: 47000000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "A6", blok: "A", floor: 2, land_length: 11.8, land_width: 6.7, land_area: 79.1, dp_price: 67650000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "B1", blok: "B", floor: 2, land_length: 10.3, land_width: 6, land_area: 61.8, dp_price: 24500000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "B2", blok: "B", floor: 2, land_length: 10, land_width: 6, land_area: 60, dp_price: 20000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "B3", blok: "B", floor: 2, land_length: 10.7, land_width: 6, land_area: 64.2, dp_price: 30500000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "B4", blok: "B", floor: 2, land_length: 10.6, land_width: 6, land_area: 63.6, dp_price: 29000000, house_price: HOUSE_PRICE, status: "tersedia" },
-  { unit: "B5", blok: "B", floor: 2, land_length: 10.5, land_width: 6, land_area: 63, dp_price: 27500000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "B1", blok: "B", floor: 2, land_length: 10.3, land_width: 6, land_area: 61.8, dp_price: 24500000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "B2", blok: "B", floor: 2, land_length: 10, land_width: 6, land_area: 60, dp_price: 20000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "B3", blok: "B", floor: 2, land_length: 10.7, land_width: 6, land_area: 64.2, dp_price: 30500000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "B4", blok: "B", floor: 2, land_length: 10.6, land_width: 6, land_area: 63.6, dp_price: 29000000, house_price: HOUSE_PRICE, status: "terjual" },
+  { unit: "B5", blok: "B", floor: 2, land_length: 10.5, land_width: 6, land_area: 63, dp_price: 27500000, house_price: HOUSE_PRICE, status: "terjual" },
 ];
 
 export const INSTALLMENTS = [

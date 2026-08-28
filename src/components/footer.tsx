@@ -67,7 +67,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/45">
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/55">
           <p>© {new Date().getFullYear()} {COMPANY}. Seluruh hak cipta dilindungi.</p>
           <p className="mt-1.5">Harga dan ketersediaan unit dapat berubah sewaktu-waktu.</p>
         </div>
