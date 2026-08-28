@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
     description:
-      "Hunian modern 2 lantai dengan ruang lebih luas untuk keluarga Anda. Booking hanya Rp 100 ribu, gratis DP hingga pajak.",
+      "Hunian modern 2 lantai dengan ruang lebih luas untuk keluarga Anda. Booking hanya Rp 100 ribu, gratis biaya realisasi dan pajak.",
     url: "/",
     siteName: "Bhumi Saka Arum",
     locale: "id_ID",

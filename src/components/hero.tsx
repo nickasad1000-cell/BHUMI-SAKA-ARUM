@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { WhatsappLogo, Lightning } from "@phosphor-icons/react/dist/ssr";
 import { ScrollTo } from "@/components/scroll-to";
 import { waLink } from "@/lib/data";
 
@@ -32,7 +32,10 @@ export function Hero() {
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-navy-100 sm:text-lg">
               Hunian modern siap huni, ±8 menit dari Alun-Alun Kota Lumajang.
-              Booking hanya Rp 100 ribu.
+            </p>
+            <p className="mt-4 inline-flex items-center gap-2.5 rounded-full bg-gold-400/10 px-5 py-3 text-sm font-extrabold text-gold-300 ring-1 ring-gold-400/50 sm:text-base">
+              <Lightning size={20} weight="fill" className="text-gold-400" />
+              Booking hanya Rp 100 ribu
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a

@@ -9,8 +9,8 @@ const ITEMS = [
   },
   {
     icon: ShieldCheck,
-    title: "Gratis DP & Pajak",
-    desc: "Bebas biaya realisasi, administrasi, balik nama, dan pajak.",
+    title: "Gratis Biaya Realisasi dan Pajak",
+    desc: "Bebas biaya administrasi, balik nama, dan provisi KPR.",
   },
   {
     icon: MapPin,

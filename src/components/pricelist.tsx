@@ -35,27 +35,30 @@ export function Pricelist({ units }: { units: Unit[] }) {
           </p>
         </div>
 
-        <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-navy-50 px-4 py-2 text-sm font-bold text-navy-900">
-          <span className="h-2 w-2 rounded-full bg-emerald-500" />
-          Ready {ready} dari {units.length} unit
-        </p>
-
-        <div className="mt-4 inline-flex rounded-full bg-navy-50 p-1">
-          {([2, 1] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFloor(f)}
-              aria-pressed={floor === f}
-              className={`rounded-full px-5 py-3 text-sm font-bold transition ${
-                floor === f
-                  ? "bg-navy-950 text-white shadow-sm"
-                  : "text-navy-800 hover:text-navy-950"
-              }`}
-            >
-              {f === 2 ? "Lantai 2 (Blok A & B)" : "Lantai 1 (Blok C)"}
-            </button>
-          ))}
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="inline-flex rounded-full bg-navy-50 p-1">
+            {([2, 1] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFloor(f)}
+                aria-pressed={floor === f}
+                className={`rounded-full px-5 py-3 text-sm font-bold transition ${
+                  floor === f
+                    ? "bg-navy-950 text-white shadow-sm"
+                    : "text-navy-800 hover:text-navy-950"
+                }`}
+              >
+                {f === 2 ? "Lantai 2 (Blok A & B)" : "Lantai 1 (Blok C)"}
+              </button>
+            ))}
+          </div>
+          <p className="inline-flex items-center gap-4 text-sm font-semibold text-navy-800 sm:ml-auto">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Ready {ready} dari {units.length} unit
+            </span>
+          </p>
         </div>
 
         <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-navy-100">
