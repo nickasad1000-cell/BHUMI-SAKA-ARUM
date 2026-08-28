@@ -25,8 +25,9 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Perumahan rumah subsidi 2 lantai satu-satunya di Lumajang —
-              hunian modern siap huni untuk keluarga Anda.
+              Rumah subsidi 2 LANTAI
+              <span className="block">Satu-satunya di Lumajang</span>
+              <span className="block">Hunian modern siap huni untuk keluarga Anda.</span>
             </p>
           </div>
 
@@ -37,7 +38,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li className="flex items-start gap-2.5">
                 <MapPin size={17} weight="duotone" className="mt-0.5 shrink-0 text-gold-400" />
-                Klampokarum, Kec. Senduro, Kabupaten Lumajang, Jawa Timur
+                Klampokarum, Kec. Kunir, Kabupaten Lumajang, Jawa Timur
               </li>
               <li>
                 <a
@@ -66,9 +67,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row">
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/45">
           <p>© {new Date().getFullYear()} {COMPANY}. Seluruh hak cipta dilindungi.</p>
-          <p>Harga dan ketersediaan unit dapat berubah sewaktu-waktu.</p>
+          <p className="mt-1.5">Harga dan ketersediaan unit dapat berubah sewaktu-waktu.</p>
         </div>
       </div>
     </footer>

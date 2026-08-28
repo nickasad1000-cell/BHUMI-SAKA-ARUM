@@ -15,7 +15,7 @@ export function LocationSection() {
               <div className="flex items-start gap-3">
                 <MapPin size={20} weight="duotone" className="mt-0.5 shrink-0 text-navy-600" />
                 <p className="text-sm leading-relaxed text-navy-800/80">
-                  Jl. Raya Klampokarum, Kec. Senduro, Kabupaten Lumajang,
+                  Jl. Raya Klampokarum, Kec. Kunir, Kabupaten Lumajang,
                   Jawa Timur — akses jalan kabupaten langsung di depan site.
                 </p>
               </div>

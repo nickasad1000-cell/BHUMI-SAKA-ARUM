@@ -27,9 +27,8 @@ export function Hero() {
               Klampokarum · Lumajang
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Rumah Subsidi{" "}
-              <span className="text-gold-400">2 Lantai</span>, Satu-satunya di
-              Lumajang
+              Rumah Subsidi <span className="text-gold-400">2 LANTAI</span>
+              <span className="block">Satu-satunya di Lumajang</span>
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-navy-100 sm:text-lg">
               Hunian modern siap huni, ±8 menit dari Alun-Alun Kota Lumajang.
