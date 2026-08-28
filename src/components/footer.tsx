@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { WhatsappLogo, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import { COMPANY, WA_DISPLAY, waLink } from "@/lib/data";
+import { ScrollTo } from "@/components/scroll-to";
 
 export function Footer() {
   return (
@@ -57,10 +58,10 @@ export function Footer() {
               Navigasi
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm text-white/70">
-              <li><a href="#tipe" className="transition hover:text-white">Tipe Rumah</a></li>
-              <li><a href="#harga" className="transition hover:text-white">Pricelist</a></li>
-              <li><a href="#galeri" className="transition hover:text-white">Galeri</a></li>
-              <li><a href="#lokasi" className="transition hover:text-white">Lokasi</a></li>
+              <li><ScrollTo target="tipe" className="text-left transition hover:text-white">Tipe Rumah</ScrollTo></li>
+              <li><ScrollTo target="harga" className="text-left transition hover:text-white">Pricelist</ScrollTo></li>
+              <li><ScrollTo target="galeri" className="text-left transition hover:text-white">Galeri</ScrollTo></li>
+              <li><ScrollTo target="lokasi" className="text-left transition hover:text-white">Lokasi</ScrollTo></li>
             </ul>
           </div>
         </div>
