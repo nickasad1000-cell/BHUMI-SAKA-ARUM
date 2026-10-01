@@ -17,11 +17,18 @@ export function formatRupiah(value: number) {
 
 export type UnitStatus = "tersedia" | "terjual";
 
-/** Unit yang sudah TERJUAL sesuai siteplan terbaru. */
+/**
+ * Unit yang sudah TERJUAL.
+ *
+ * PENTING: ini hanya dipakai kalau kolom `status` di Supabase kosong atau
+ * nilainya tidak dikenal - `unitStatus()` mengutamakan kolom DB. Sumber yang
+ * benar-benar terlihat pengunjung adalah database, jadi setiap perubahan di
+ * sini WAJIBPAIR dengan update DB (lihat supabase/migrations/).
+ */
 const SOLD = new Set([
   "A2", "A3", "A5",
   "B1", "B2", "B3", "B4", "B5",
-  "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
+  "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
 ]);
 
 export function unitStatus(u: { unit: string; status?: string | null }): UnitStatus {
@@ -48,7 +55,7 @@ export type Unit = {
 export const FALLBACK_UNITS: Unit[] = [
   { unit: "C1", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 13000000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "C2", blok: "C", floor: 1, land_length: 12.7, land_width: 6, land_area: 76.2, dp_price: 12800000, house_price: HOUSE_PRICE, status: "terjual" },
-  { unit: "C3", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10400000, house_price: HOUSE_PRICE, status: "tersedia" },
+  { unit: "C3", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10400000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "C4", blok: "C", floor: 1, land_length: 12.5, land_width: 6, land_area: 75, dp_price: 10500000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "C5", blok: "C", floor: 1, land_length: 12.4, land_width: 6, land_area: 74.4, dp_price: 10600000, house_price: HOUSE_PRICE, status: "terjual" },
   { unit: "C6", blok: "C", floor: 1, land_length: 10.7, land_width: 6, land_area: 64.2, dp_price: 14500000, house_price: HOUSE_PRICE, status: "terjual" },
