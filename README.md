@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Supabase
+
+Project produksi: **Bhumisakaarum**, ref `lqcldkujflnancoszbfd`, region `ap-southeast-1`.
+
+Isi database berasal dari `supabase/migrations/` (`0001_init.sql` membuat tabel `units` + bucket `gallery`, `0002_status_penjualan.sql` mengunci status penjualan). Repo sudah ter-link ke project ini — `supabase migration list` harus menunjukkan `0001`/`0002` di Local dan Remote tanpa selisih. Jangan apply migration manual lewat SQL Editor: versiRemote dicatat di `supabase_migrations`, jadi SQL Editor membuat drift yang diam-diam.
+
+Env yang dibaca `src/lib/supabase.ts`:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://lqcldkujflnancoszbfd.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable / anon key>
+```
+
+Kode memakai client anon untuk membaca `units` dan menulis `leads`, jadi **service role tidak diperlukan** dan tidak boleh masuk ke env Vercel. Tabel `leads` sengaja tidak punya policy SELECT — hanya ada policy insert, jadi PostgREST dengan `Prefer: return=representation` akan gagal; itu perilaku yang benar, bukan bug.

@@ -45,3 +45,9 @@ assets-4k/
 assets-4k-jpg/
 .vercel
 .env*
+
+# cache Supabase CLI - jangan di-commit, (ref bisa stale dan menyesatkan)
+supabase/.temp/
+
+# dump backup - berisi data lead asli (PII), jangan di-commit
+backups/
