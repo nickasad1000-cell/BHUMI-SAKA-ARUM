@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import {
+  bookingCount,
   formatRupiah,
+  isBooking,
   isReady,
   readyCount,
   waLink,
@@ -17,6 +19,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
   const router = useRouter();
   const rows = units.filter((u) => u.floor === floor);
   const ready = readyCount(units);
+  const booking = bookingCount(units);
 
   return (
     <section id="harga" className="scroll-mt-20 bg-white">
@@ -58,6 +61,12 @@ export function Pricelist({ units }: { units: Unit[] }) {
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
               Ready {ready} dari {units.length} unit
             </span>
+            {booking > 0 && (
+              <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-sky-800 ring-1 ring-sky-200">
+                <span className="h-2 w-2 rounded-full bg-sky-500" />
+                Booking {booking}
+              </span>
+            )}
           </p>
         </div>
 
@@ -77,6 +86,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
               <tbody className="divide-y divide-navy-100 bg-white">
                 {rows.map((u) => {
                   const tersedia = isReady(u);
+                  const dibooking = isBooking(u);
                   return (
                     <tr
                       key={u.unit}
@@ -109,6 +119,11 @@ export function Pricelist({ units }: { units: Unit[] }) {
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             Tersedia
                           </span>
+                        ) : dibooking ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-2.5 py-1 text-xs font-bold text-sky-700">
+                            <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+                            Booking
+                          </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-700">
                             <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
@@ -132,7 +147,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
                         ) : (
                           <a
                             href={waLink(
-                              `Halo, unit ${u.unit} di Bhumi Saka Arum sudah terjual. Mohon info unit yang masih tersedia.`
+                              `Halo, unit ${u.unit} di Bhumi Saka Arum ${dibooking ? "sedang booking" : "sudah terjual"}. Mohon info unit yang masih tersedia.`
                             )}
                             target="_blank"
                             rel="noopener noreferrer"

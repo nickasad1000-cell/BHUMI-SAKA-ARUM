@@ -4,7 +4,9 @@ import {
   BUILD_SPEC,
   KPR_EMPLOYEE,
   KPR_ENTREPRENEUR,
+  bookingCount,
   isReady,
+  unitStatus,
   type Unit,
 } from "@/lib/data";
 
@@ -28,6 +30,8 @@ function DocList({ title, items }: { title: string; items: string[] }) {
 
 export function SitePlan({ units }: { units: Unit[] }) {
   const ready = units.filter(isReady).length;
+  const booking = bookingCount(units);
+  const terjual = units.filter((u) => unitStatus(u) === "terjual").length;
 
   return (
     <section id="siteplan" className="scroll-mt-20 bg-paper">
@@ -48,9 +52,15 @@ export function SitePlan({ units }: { units: Unit[] }) {
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
               Ready {ready} dari {units.length} unit
             </span>
+            {booking > 0 && (
+              <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-sky-800 ring-1 ring-sky-200">
+                <span className="h-2 w-2 rounded-full bg-sky-500" />
+                Booking {booking}
+              </span>
+            )}
             <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
               <span className="h-2 w-2 rounded-full bg-red-500" />
-              Terjual {units.length - ready}
+              Terjual {terjual}
             </span>
           </p>
         </Reveal>

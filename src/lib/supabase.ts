@@ -11,36 +11,77 @@ export function getSupabase(): SupabaseClient | null {
   return client;
 }
 
-const VALID_STATUS = new Set(["tersedia", "terjual"]);
+const TRACKER_URL = (
+  process.env.SYAHFALAH_URL || "https://syahfalahgroup.vercel.app"
+).replace(/\/+$/, "");
 
-export async function getUnits(): Promise<Unit[]> {
-  const supabase = getSupabase();
-  if (!supabase) return FALLBACK_UNITS;
+type TrackerUnit = {
+  perumahan: string;
+  kode: string;
+  status: string;
+  persen_real: number | string | null;
+  foto_url: string | null;
+};
+
+const VALID_STATUS = new Set(["tersedia", "booking", "terjual"]);
+const PERUMAHAN = "Bhumi Saka Arum";
+
+function kodeKatalog(kode: string) {
+  return kode.toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+function angka(value: number | string | null) {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : null;
+}
+
+async function tarikUnit(): Promise<Unit[] | null> {
+  const token = process.env.PUBLIK_UNIT_TOKEN;
+  if (!token) return null;
   try {
-    const { data, error } = await supabase
-      .from("units")
-      .select("*")
-      .order("sort");
-    if (error) {
-      console.error("[units] Supabase error:", error.message);
-      return FALLBACK_UNITS;
+    const res = await fetch(`${TRACKER_URL}/api/publik/unit`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) {
+      console.error("[units] tracker error:", res.status);
+      return null;
     }
-    if (!data || data.length === 0) {
-      console.error("[units] Supabase returned no rows, using fallback");
-      return FALLBACK_UNITS;
+    const body = (await res.json()) as { data?: TrackerUnit[] };
+    const rows = (body.data ?? []).filter(
+      (row) => row.perumahan === PERUMAHAN && VALID_STATUS.has(row.status)
+    );
+    if (rows.length === 0) {
+      console.error("[units] tracker returned no rows, using fallback");
+      return null;
     }
-    return data as Unit[];
+    const byKode = new Map(rows.map((row) => [kodeKatalog(row.kode), row]));
+    return FALLBACK_UNITS.map((unit) => {
+      const row = byKode.get(kodeKatalog(unit.unit));
+      if (!row) return unit;
+      return {
+        ...unit,
+        status: row.status,
+        persen: angka(row.persen_real),
+        foto: row.foto_url,
+      };
+    });
   } catch (e) {
-    console.error("[units] Supabase fetch failed, using fallback:", e);
-    return FALLBACK_UNITS;
+    console.error("[units] tracker fetch failed, using fallback:", e);
+    return null;
   }
 }
 
-/**
- * Status tampilan: DB `status` bila valid, fallback ke SOLD set.
- */
+export async function getUnits(): Promise<Unit[]> {
+  return (await tarikUnit()) ?? FALLBACK_UNITS;
+}
+
+/** Status tampilan: nilai tracker yang valid. */
 export function displayStatus(u: { unit: string; status?: string | null }) {
   return u.status && VALID_STATUS.has(u.status)
-    ? (u.status as "tersedia" | "terjual")
+    ? (u.status as "tersedia" | "booking" | "terjual")
     : undefined;
 }
