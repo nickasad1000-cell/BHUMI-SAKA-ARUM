@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { Highlights } from "@/components/highlights";
 import { HouseTypes } from "@/components/house-types";
 import { Pricelist } from "@/components/pricelist";
 import { InstallmentCalculator } from "@/components/calculator";
@@ -23,7 +22,6 @@ export default async function Home() {
       <ScrollRestorer />
       <main>
         <Hero />
-        <Highlights />
         <HouseTypes />
         <Pricelist units={units} />
         <InstallmentCalculator />

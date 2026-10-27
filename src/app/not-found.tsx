@@ -20,14 +20,14 @@ export default function NotFound() {
           </h1>
           <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-navy-100">
             Halaman yang Anda cari mungkin sudah dipindahkan atau tidak pernah
-            ada. Silakan kembali ke pricelist untuk melihat unit yang tersedia.
+            ada. Silakan kembali ke daftar unit.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/"
               className="inline-flex min-h-[52px] items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold text-navy-950 transition hover:bg-gold-300 active:scale-[0.98]"
             >
-              Kembali ke Pricelist
+              Kembali ke daftar unit
             </Link>
           </div>
         </div>

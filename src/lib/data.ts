@@ -74,14 +74,14 @@ export const INSTALLMENTS = [
 ];
 
 export const SPEC_FLOOR_1 = [
-  "Bangunan type 36",
+  "Bangunan tipe 36",
   "2 Kamar Tidur · 1 Kamar Mandi",
   "Lantai keramik 40×40",
   "Rabat carport",
 ];
 
 export const SPEC_FLOOR_2 = [
-  "Bangunan type 36 — 2 lantai penuh",
+  "Bangunan tipe 36 — 2 lantai penuh",
   "Atap full cor · Lantai full granit",
   "Pagar couple & roster setinggi 2,5 m",
   "Tangga besi · Lampu gantung ruang tamu",

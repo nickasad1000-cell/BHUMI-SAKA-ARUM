@@ -3,22 +3,74 @@
 import { useState } from "react";
 import Link from "next/link";
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import { formatRupiah, isReady, waLink, type Unit } from "@/lib/data";
+import {
+  formatRupiah,
+  unitStatus,
+  waLink,
+  type Unit,
+  type UnitStatus,
+} from "@/lib/data";
+
+const STATUS_STYLE: Record<UnitStatus, string> = {
+  tersedia: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+  booking: "bg-amber-50 text-amber-700 ring-amber-200",
+  terjual: "bg-navy-50 text-navy-700 ring-navy-200",
+};
+
+const STATUS_LABEL: Record<UnitStatus, string> = {
+  tersedia: "Tersedia",
+  booking: "Booking",
+  terjual: "Terjual",
+};
+
+function StatusBadge({ status }: { status: UnitStatus }) {
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ring-1 ${STATUS_STYLE[status]}`}
+    >
+      {STATUS_LABEL[status]}
+    </span>
+  );
+}
 
 export function Pricelist({ units }: { units: Unit[] }) {
   const [floor, setFloor] = useState<1 | 2>(2);
-  const readyUnits = units.filter(isReady);
-  const rows = readyUnits.filter((u) => u.floor === floor);
+
+  const counts = units.reduce(
+    (acc, u) => {
+      acc.total += 1;
+      if (unitStatus(u) === "tersedia") acc.tersedia += 1;
+      else if (unitStatus(u) === "booking") acc.booking += 1;
+      else acc.terjual += 1;
+      return acc;
+    },
+    { total: 0, tersedia: 0, booking: 0, terjual: 0 }
+  );
+
+  const rows = units.filter((u) => u.floor === floor);
 
   return (
     <section id="harga" className="scroll-mt-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <h2 className="sr-only">Pricelist Unit</h2>
-
-        <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-navy-800 ring-1 ring-navy-100">
-          <span className="h-2 w-2 rounded-full bg-emerald-500" />
-          {readyUnits.length} unit siap huni
-        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+              Daftar unit
+            </h2>
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
+              Status dan harga terbaru dari data pemasaran.
+            </p>
+          </div>
+          <p className="text-sm font-semibold text-navy-800">
+            {counts.total} unit
+            <span className="text-navy-800/40"> · </span>
+            {counts.tersedia} tersedia
+            <span className="text-navy-800/40"> · </span>
+            {counts.booking} booking
+            <span className="text-navy-800/40"> · </span>
+            {counts.terjual} terjual
+          </p>
+        </div>
 
         <div className="mt-5 flex flex-wrap items-center gap-4">
           <div className="inline-flex rounded-full bg-navy-50 p-1">
@@ -43,71 +95,74 @@ export function Pricelist({ units }: { units: Unit[] }) {
         {rows.length === 0 ? (
           <div className="mt-6 rounded-2xl border border-dashed border-navy-200 p-8 text-center">
             <p className="text-sm text-navy-800/70">
-              Belum ada unit lantai {floor} yang siap huni.
+              Tidak ada unit lantai {floor} di blok ini.
             </p>
-            <a
-              href={waLink(
-                "Halo, saya ingin info unit Bhumi Saka Arum yang masih tersedia."
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-5 text-sm font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
-            >
-              <WhatsappLogo size={16} weight="bold" />
-              Tanya unit yang tersedia
-            </a>
           </div>
         ) : (
           <>
             <div className="mt-6 grid gap-3 md:hidden">
-              {rows.map((u) => (
-                <div
-                  key={u.unit}
-                  className="rounded-2xl bg-white p-4 ring-1 ring-navy-100"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <Link
-                        href={`/unit/${u.unit.toLowerCase()}`}
-                        className="text-lg font-extrabold text-navy-950 underline decoration-navy-200 decoration-2 underline-offset-4"
-                      >
-                        {u.unit}
-                      </Link>
-                      <p className="mt-0.5 text-sm text-navy-800/70">
-                        Blok {u.blok} · Lantai {u.floor} ·{" "}
-                        {String(u.land_area).replace(".", ",")} m²
-                      </p>
+              {rows.map((u) => {
+                const status = unitStatus(u);
+                return (
+                  <div
+                    key={u.unit}
+                    className="rounded-2xl bg-white p-4 ring-1 ring-navy-100"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {status === "tersedia" ? (
+                            <Link
+                              href={`/unit/${u.unit.toLowerCase()}`}
+                              className="text-lg font-extrabold text-navy-950 underline decoration-navy-200 decoration-2 underline-offset-4"
+                            >
+                              {u.unit}
+                            </Link>
+                          ) : (
+                            <span className="text-lg font-extrabold text-navy-950">
+                              {u.unit}
+                            </span>
+                          )}
+                          <StatusBadge status={status} />
+                        </div>
+                        <p className="mt-1 text-sm text-navy-800/70">
+                          Blok {u.blok} · Lantai {u.floor} ·{" "}
+                          {String(u.land_area).replace(".", ",")} m²
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-navy-800/50">
+                          Peningkatan mutu
+                        </p>
+                        <p className="mt-0.5 text-sm font-bold text-navy-950">
+                          {formatRupiah(u.dp_price)}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-navy-800/50">
-                        Peningkatan mutu
-                      </p>
-                      <p className="mt-0.5 text-sm font-bold text-navy-950">
-                        {formatRupiah(u.dp_price)}
-                      </p>
-                    </div>
+                    {status === "tersedia" && (
+                      <div className="mt-3 flex items-center justify-between gap-3">
+                        <Link
+                          href={`/unit/${u.unit.toLowerCase()}`}
+                          className="text-xs font-semibold text-navy-700"
+                        >
+                          Lihat detail →
+                        </Link>
+                        <a
+                          href={waLink(
+                            `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
+                        >
+                          <WhatsappLogo size={14} weight="bold" />
+                          Pesan
+                        </a>
+                      </div>
+                    )}
                   </div>
-                  <div className="mt-3 flex items-center justify-between gap-3">
-                    <Link
-                      href={`/unit/${u.unit.toLowerCase()}`}
-                      className="text-xs font-semibold text-navy-700"
-                    >
-                      Lihat detail →
-                    </Link>
-                    <a
-                      href={waLink(
-                        `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
-                    >
-                      <WhatsappLogo size={14} weight="bold" />
-                      Pesan
-                    </a>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mt-6 hidden overflow-hidden rounded-2xl ring-1 ring-navy-100 md:block">
@@ -126,47 +181,67 @@ export function Pricelist({ units }: { units: Unit[] }) {
                     <th scope="col" className="px-5 py-3.5">
                       Peningkatan Mutu
                     </th>
+                    <th scope="col" className="px-5 py-3.5">
+                      Status
+                    </th>
                     <th scope="col" className="px-5 py-3.5 text-right">
                       Aksi
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-navy-100 bg-white">
-                  {rows.map((u) => (
-                    <tr key={u.unit} className="transition-colors hover:bg-navy-50/60">
-                      <td className="whitespace-nowrap px-5 py-3.5 font-extrabold text-navy-950">
-                        <Link
-                          href={`/unit/${u.unit.toLowerCase()}`}
-                          className="underline decoration-navy-200 decoration-2 underline-offset-4 hover:decoration-gold-400"
-                        >
-                          {u.unit}
-                        </Link>
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-3.5 text-navy-800/80">
-                        {String(u.land_length).replace(".", ",")} ×{" "}
-                        {String(u.land_width).replace(".", ",")} m
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-3.5 text-navy-800/80">
-                        {String(u.land_area).replace(".", ",")} m²
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-3.5 font-bold text-navy-950">
-                        {formatRupiah(u.dp_price)}
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-3.5 text-right">
-                        <a
-                          href={waLink(
-                            `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                  {rows.map((u) => {
+                    const status = unitStatus(u);
+                    return (
+                      <tr
+                        key={u.unit}
+                        className="transition-colors hover:bg-navy-50/60"
+                      >
+                        <td className="whitespace-nowrap px-5 py-3.5 font-extrabold text-navy-950">
+                          {status === "tersedia" ? (
+                            <Link
+                              href={`/unit/${u.unit.toLowerCase()}`}
+                              className="underline decoration-navy-200 decoration-2 underline-offset-4 hover:decoration-gold-400"
+                            >
+                              {u.unit}
+                            </Link>
+                          ) : (
+                            u.unit
                           )}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
-                        >
-                          <WhatsappLogo size={14} weight="bold" />
-                          Pesan
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-3.5 text-navy-800/80">
+                          {String(u.land_length).replace(".", ",")} ×{" "}
+                          {String(u.land_width).replace(".", ",")} m
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-3.5 text-navy-800/80">
+                          {String(u.land_area).replace(".", ",")} m²
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-3.5 font-bold text-navy-950">
+                          {formatRupiah(u.dp_price)}
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-3.5">
+                          <StatusBadge status={status} />
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-3.5 text-right">
+                          {status === "tersedia" ? (
+                            <a
+                              href={waLink(
+                                `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                              )}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-navy-950 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-navy-800 active:scale-[0.98]"
+                            >
+                              <WhatsappLogo size={14} weight="bold" />
+                              Pesan
+                            </a>
+                          ) : (
+                            <span className="text-xs text-navy-800/40">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

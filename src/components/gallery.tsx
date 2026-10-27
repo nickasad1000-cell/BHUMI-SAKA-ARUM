@@ -8,11 +8,10 @@ export function Gallery() {
     <section id="galeri" className="scroll-mt-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <h2 className="max-w-xl text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-          Lihat langsung unitnya
+          Foto unit
         </h2>
         <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-          Dokumentasi asli unit peraga (show unit) — fasad depan, interior ruang tamu, kamar
-          tidur, hingga detail kamar mandi. Ketuk foto untuk memperbesar.
+          Dokumentasi unit peraga dan lingkungan perumahan.
         </p>
 
         <div className="mt-10">

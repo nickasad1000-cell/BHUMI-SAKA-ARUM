@@ -25,8 +25,7 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Rumah subsidi 2 lantai
-              <span className="block">Hunian modern siap huni untuk keluarga Anda.</span>
+              Rumah subsidi 2 lantai di Klampokarum, Lumajang.
             </p>
           </div>
 
@@ -59,7 +58,7 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm text-white/70">
               <li><ScrollTo target="tipe" className="text-left transition hover:text-white">Tipe Rumah</ScrollTo></li>
-              <li><ScrollTo target="harga" className="text-left transition hover:text-white">Pricelist</ScrollTo></li>
+              <li><ScrollTo target="harga" className="text-left transition hover:text-white">Daftar Unit</ScrollTo></li>
               <li><ScrollTo target="galeri" className="text-left transition hover:text-white">Galeri</ScrollTo></li>
               <li><ScrollTo target="lokasi" className="text-left transition hover:text-white">Lokasi</ScrollTo></li>
             </ul>

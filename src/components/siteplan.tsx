@@ -30,10 +30,10 @@ export function SitePlan() {
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <Reveal>
           <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-            Siteplan &amp; persyaratan KPR
+            Siteplan &amp; KPR
           </h2>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-            21 unit pada Blok A, B, dan C. Tersedia juga rumah hook/pojok.
+            21 unit pada Blok A, B, dan C.
           </p>
         </Reveal>
 

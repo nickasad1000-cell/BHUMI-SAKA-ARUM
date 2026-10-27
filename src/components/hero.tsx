@@ -27,11 +27,12 @@ export function Hero() {
               Klampokarum · Lumajang
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Rumah Subsidi <span className="text-gold-400">2 LANTAI</span>
-              <span className="block">Satu-satunya di Lumajang</span>
+              Rumah Subsidi <span className="text-gold-400">2 Lantai</span>
+              <span className="block">di Lumajang</span>
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-navy-100 sm:text-lg">
-              Hunian modern siap huni, ±8 menit dari Alun-Alun Kota Lumajang.
+              Tipe 36 di Klampokarum, sekitar 8 menit dari Alun-Alun Kota
+              Lumajang.
             </p>
             <p className="mt-4 inline-flex items-center gap-2.5 rounded-full bg-gold-400/10 px-5 py-3 text-sm font-extrabold text-gold-300 ring-1 ring-gold-400/50 sm:text-base">
               <Lightning size={20} weight="fill" className="text-gold-400" />
@@ -53,7 +54,7 @@ export function Hero() {
                 target="harga"
                 className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/60 active:scale-[0.98]"
               >
-                Lihat Pricelist
+                Lihat daftar unit
               </ScrollTo>
             </div>
           </div>

@@ -9,14 +9,14 @@ export function LocationSection() {
         <div className="grid items-center gap-10 lg:grid-cols-5">
           <Reveal className="lg:col-span-2">
             <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-              Lokasi strategis di jantung Lumajang
+              Lokasi
             </h2>
             <div className="mt-6 space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin size={20} weight="duotone" className="mt-0.5 shrink-0 text-navy-600" />
                 <p className="text-sm leading-relaxed text-navy-800/80">
                   Jl. Raya Klampokarum, Kec. Kunir, Kabupaten Lumajang,
-                  Jawa Timur — akses jalan kabupaten langsung di depan site.
+                  Jawa Timur.
                 </p>
               </div>
               <div className="flex items-start gap-3">

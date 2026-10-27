@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!u) return { title: "Unit tidak ditemukan", robots: { index: false } };
 
   const title = `Unit ${u.unit} — Rumah Subsidi ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} Lumajang`;
-  const description = `Unit ${u.unit} — rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}.`;
+  const description = `Unit ${u.unit} — rumah subsidi tipe 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}.`;
 
   return {
     title,
@@ -84,8 +84,8 @@ export default async function UnitDetailPage({ params }: PageProps) {
   const unitLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `Rumah Subsidi Type 36 ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} — Unit ${u.unit}`,
-    description: `Rumah subsidi type 36 di Bhumi Saka Arum, Klampokarum, Kec. Kunir, Lumajang. Harga ${formatRupiah(u.house_price)}.`,
+    name: `Rumah Subsidi Tipe 36 ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} — Unit ${u.unit}`,
+    description: `Rumah subsidi tipe 36 di Bhumi Saka Arum, Klampokarum, Kec. Kunir, Lumajang. Harga ${formatRupiah(u.house_price)}.`,
     image: `${SITE}/images/og-image.jpg`,
     offers: {
       "@type": "Offer",
@@ -100,7 +100,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Pricelist", item: `${SITE}/#harga` },
+      { "@type": "ListItem", position: 1, name: "Daftar Unit", item: `${SITE}/#harga` },
       { "@type": "ListItem", position: 2, name: `Unit ${u.unit}`, item: `${SITE}/unit/${u.unit.toLowerCase()}` },
     ],
   };
@@ -114,7 +114,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
         <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="text-sm text-navy-800/70">
             <BackLink target="harga" className="font-semibold text-navy-800 transition-colors hover:text-navy-950">
-              Pricelist
+              Daftar Unit
             </BackLink>
             <span aria-hidden> / </span>
             <span className="font-bold text-navy-950">Unit {u.unit}</span>
@@ -129,7 +129,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                 </h1>
               </div>
               <p className="mt-2 text-lg font-semibold text-navy-800/80">
-                Blok {u.blok} · Lantai {u.floor} · Type 36 ·{" "}
+                Blok {u.blok} · Lantai {u.floor} · Tipe 36 ·{" "}
                 {u.floor === 2 ? "2 Lantai Penuh" : "1 Lantai"}
               </p>
 
@@ -209,7 +209,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                   className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-navy-200 bg-white px-6 text-sm font-bold text-navy-900 transition hover:border-navy-300 active:scale-[0.98]"
                 >
                   <ArrowLeft size={16} weight="bold" />
-                  Lihat Pricelist
+                  Lihat daftar unit
                 </BackLink>
               </div>
             </div>

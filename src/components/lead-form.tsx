@@ -84,11 +84,10 @@ export function LeadForm() {
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-              Tertarik? Kirim minat Anda
+              Hubungi pemasaran
             </h2>
             <p className="mt-3 max-w-md text-base leading-relaxed text-navy-800/70">
-              Tinggalkan data Anda — tim pemasaran kami akan menghubungi Anda
-              untuk konsultasi KPR dan jadwal survey.
+              Isi data untuk konsultasi KPR dan jadwal survey.
             </p>
             <p className="mt-6 text-sm font-semibold text-navy-800">
               Butuh cepat?{" "}

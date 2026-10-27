@@ -6,7 +6,7 @@ import { SPEC_FLOOR_1, SPEC_FLOOR_2, formatRupiah, INSTALLMENTS } from "@/lib/da
 const TYPES = [
   {
     label: "Tipe Lantai 1",
-    title: "Type 36 · Lantai 1",
+    title: "Tipe 36 · Lantai 1",
     image: "/images/living-lantai1.webp",
     alt: "Interior rumah tipe lantai 1 Bhumi Saka Arum",
     specs: SPEC_FLOOR_1,
@@ -14,7 +14,7 @@ const TYPES = [
   },
   {
     label: "Tipe Lantai 2",
-    title: "Type 36 · 2 Lantai",
+    title: "Tipe 36 · 2 Lantai",
     badge: "Unggulan",
     image: "/images/living-stairs.webp",
     alt: "Ruang tengah rumah 2 lantai dengan tangga besi",
@@ -29,11 +29,10 @@ export function HouseTypes() {
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <Reveal>
           <h2 className="max-w-xl text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-            Dua pilihan tipe, satu standar kualitas
+            Tipe rumah
           </h2>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-            Semua unit dibangun dengan spesifikasi yang sama baiknya — pilih
-            yang paling pas untuk keluarga Anda.
+            Tipe 36 dengan pilihan lantai 1 atau 2 lantai.
           </p>
         </Reveal>
 
@@ -62,7 +61,7 @@ export function HouseTypes() {
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-navy-800">
                     <span className="inline-flex items-center gap-1.5">
                       <ArrowsOut size={16} weight="bold" className="text-navy-600" />
-                      Type 36
+                      Tipe 36
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                       <Bed size={16} weight="bold" className="text-navy-600" />

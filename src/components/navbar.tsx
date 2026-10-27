@@ -9,7 +9,7 @@ import { waLink } from "@/lib/data";
 
 const LINKS = [
   { href: "tipe", label: "Tipe Rumah" },
-  { href: "harga", label: "Pricelist" },
+  { href: "harga", label: "Daftar Unit" },
   { href: "siteplan", label: "Siteplan" },
   { href: "galeri", label: "Galeri" },
   { href: "lokasi", label: "Lokasi" },
