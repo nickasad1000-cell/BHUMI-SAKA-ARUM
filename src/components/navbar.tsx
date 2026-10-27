@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { List, X } from "@phosphor-icons/react/dist/ssr";
 import { ScrollTo, ScrollTop } from "@/components/scroll-to";
 import { waLink } from "@/lib/data";
@@ -17,6 +18,9 @@ const LINKS = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const solid = pathname !== "/" || scrolled || open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -30,14 +34,22 @@ export function Navbar() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!headerRef.current?.contains(e.target as Node)) setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
   }, [open]);
 
   return (
     <header
+      ref={headerRef}
       className={`fixed inset-x-0 top-0 z-40 transition-colors ${
-        scrolled || open ? "bg-white/95 shadow-sm backdrop-blur" : "bg-transparent"
+        solid ? "bg-white/95 shadow-sm backdrop-blur" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -47,7 +59,7 @@ export function Navbar() {
         >
           <span
             className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-              scrolled || open ? "bg-navy-950" : "bg-white/15 backdrop-blur"
+              solid ? "bg-navy-950" : "bg-white/15 backdrop-blur"
             }`}
           >
             <Image
@@ -61,7 +73,7 @@ export function Navbar() {
           </span>
           <span
             className={`text-sm font-extrabold tracking-tight ${
-              scrolled || open ? "text-navy-950" : "text-white"
+              solid ? "text-navy-950" : "text-white"
             }`}
           >
             Bhumi Saka Arum
@@ -74,7 +86,7 @@ export function Navbar() {
               key={l.href}
               target={l.href}
               className={`inline-flex h-16 items-center px-1 text-sm font-semibold transition-colors ${
-                scrolled ? "text-navy-800 hover:text-navy-950" : "text-white/85 hover:text-white"
+                solid ? "text-navy-800 hover:text-navy-950" : "text-white/85 hover:text-white"
               }`}
             >
               {l.label}
@@ -97,7 +109,7 @@ export function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           className={`rounded-lg p-3 md:hidden ${
-            scrolled || open ? "text-navy-950" : "text-white"
+            solid ? "text-navy-950" : "text-white"
           }`}
         >
           {open ? <X size={22} weight="bold" /> : <List size={22} weight="bold" />}

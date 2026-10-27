@@ -27,7 +27,7 @@ export default async function Home() {
         <HouseTypes />
         <Pricelist units={units} />
         <InstallmentCalculator />
-        <SitePlan units={units} />
+        <SitePlan />
         <Gallery />
         <LocationSection />
         <LeadForm />

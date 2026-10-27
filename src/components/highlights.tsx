@@ -5,7 +5,7 @@ const ITEMS = [
   {
     icon: Tag,
     title: "Booking Rp 100 ribu",
-    desc: "Promo terbatas untuk mengunci unit pilihan Anda.",
+    desc: "Mengunci unit pilihan Anda.",
   },
   {
     icon: ShieldCheck,

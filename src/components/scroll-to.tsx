@@ -3,7 +3,12 @@
 import type { ReactNode } from "react";
 
 function smoothScroll(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  window.location.assign(`/#${id}`);
 }
 
 /** Tombol scroll-ke-seksi anti-hash — URL tidak pernah berubah. */
@@ -46,7 +51,13 @@ export function ScrollTop({
     <button
       type="button"
       aria-label={ariaLabel}
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => {
+        if (window.location.pathname !== "/") {
+          window.location.assign("/");
+          return;
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
       className={className}
     >
       {children}

@@ -4,10 +4,6 @@ import {
   BUILD_SPEC,
   KPR_EMPLOYEE,
   KPR_ENTREPRENEUR,
-  bookingCount,
-  isReady,
-  unitStatus,
-  type Unit,
 } from "@/lib/data";
 
 function DocList({ title, items }: { title: string; items: string[] }) {
@@ -28,11 +24,7 @@ function DocList({ title, items }: { title: string; items: string[] }) {
   );
 }
 
-export function SitePlan({ units }: { units: Unit[] }) {
-  const ready = units.filter(isReady).length;
-  const booking = bookingCount(units);
-  const terjual = units.filter((u) => unitStatus(u) === "terjual").length;
-
+export function SitePlan() {
   return (
     <section id="siteplan" className="scroll-mt-20 bg-paper">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
@@ -41,27 +33,7 @@ export function SitePlan({ units }: { units: Unit[] }) {
             Siteplan &amp; persyaratan KPR
           </h2>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-            21 unit pada Blok A, B, dan C — unit yang disilang pada site plan
-            sudah terjual. Tersedia juga rumah hook/pojok.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.05}>
-          <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-bold text-navy-900">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              Ready {ready} dari {units.length} unit
-            </span>
-            {booking > 0 && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-sky-800 ring-1 ring-sky-200">
-                <span className="h-2 w-2 rounded-full bg-sky-500" />
-                Booking {booking}
-              </span>
-            )}
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-navy-100">
-              <span className="h-2 w-2 rounded-full bg-red-500" />
-              Terjual {terjual}
-            </span>
+            21 unit pada Blok A, B, dan C. Tersedia juga rumah hook/pojok.
           </p>
         </Reveal>
 
@@ -70,7 +42,7 @@ export function SitePlan({ units }: { units: Unit[] }) {
             <ZoomImage
               src="/images/siteplan.webp"
               alt="Site plan Bhumi Saka Arum — Blok A, B, dan C, Klampokarum Lumajang"
-              caption="Siteplan Bhumi Saka Arum — unit disilang = terjual"
+              caption="Siteplan Bhumi Saka Arum — Blok A, B, dan C"
               className="w-full"
               imgClassName="h-auto w-full rounded-lg object-cover"
               width={1920}

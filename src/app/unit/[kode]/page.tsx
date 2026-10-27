@@ -11,7 +11,7 @@ import {
   BUILD_SPEC,
   formatRupiah,
   INSTALLMENTS,
-  unitStatus,
+  isReady,
   waLink,
 } from "@/lib/data";
 import { getUnits } from "@/lib/supabase";
@@ -25,12 +25,13 @@ const SITE = "https://bhumisakaarum.vercel.app";
 
 export async function generateStaticParams() {
   const units = await getUnits();
-  return units.map((u) => ({ kode: u.unit.toLowerCase() }));
+  return units.filter(isReady).map((u) => ({ kode: u.unit.toLowerCase() }));
 }
 
 async function getUnit(kode: string) {
   const units = await getUnits();
-  return units.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
+  const unit = units.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
+  return unit && isReady(unit) ? unit : undefined;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -38,11 +39,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const u = await getUnit(kode);
   if (!u) return { title: "Unit tidak ditemukan" };
 
-  const status = unitStatus(u);
-  const state =
-    status === "tersedia" ? "Tersedia" : status === "booking" ? "Booking" : "Terjual";
-  const title = `Unit ${u.unit} — Rumah Subsidi ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} Lumajang (${state})`;
-  const description = `Unit ${u.unit} — rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}. Status: ${state}.`;
+  const title = `Unit ${u.unit} — Rumah Subsidi ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} Lumajang`;
+  const description = `Unit ${u.unit} — rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}.`;
 
   return {
     title,
@@ -73,9 +71,6 @@ export default async function UnitDetailPage({ params }: PageProps) {
   const u = await getUnit(kode);
   if (!u) notFound();
 
-  const status = unitStatus(u);
-  const ready = status === "tersedia";
-  const booking = status === "booking";
   const photos = GALLERY.map((g) => ({ ...g }));
 
   const unitLd = {
@@ -88,11 +83,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
       "@type": "Offer",
       priceCurrency: "IDR",
       price: String(u.house_price),
-      availability: ready
-        ? "https://schema.org/InStock"
-        : booking
-          ? "https://schema.org/PreOrder"
-          : "https://schema.org/SoldOut",
+      availability: "https://schema.org/InStock",
       url: `${SITE}/unit/${u.unit.toLowerCase()}`,
     },
   };
@@ -128,22 +119,6 @@ export default async function UnitDetailPage({ params }: PageProps) {
                 <h1 className="text-4xl font-extrabold tracking-tight text-navy-950 sm:text-5xl">
                   Unit {u.unit}
                 </h1>
-                {ready ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    Tersedia
-                  </span>
-                ) : booking ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
-                    Booking
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    Terjual
-                  </span>
-                )}
               </div>
               <p className="mt-2 text-lg font-semibold text-navy-800/80">
                 Blok {u.blok} · Lantai {u.floor} · Type 36 ·{" "}
@@ -210,31 +185,17 @@ export default async function UnitDetailPage({ params }: PageProps) {
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                {ready ? (
-                  <a
-                    href={waLink(
-                      `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-13 min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-gold-400 px-6 text-sm font-bold text-navy-950 transition hover:bg-gold-300 active:scale-[0.98]"
-                  >
-                    <WhatsappLogo size={18} weight="bold" />
-                    Pesan Unit {u.unit}
-                  </a>
-                ) : (
-                  <a
-                    href={waLink(
-                      `Halo, unit ${u.unit} ${booking ? "sedang booking" : "sudah terjual"}. Mohon info unit yang masih tersedia di Bhumi Saka Arum.`
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full border border-navy-200 bg-white px-6 text-sm font-bold text-navy-900 transition hover:border-navy-300 active:scale-[0.98]"
-                  >
-                    <WhatsappLogo size={18} weight="bold" />
-                    {booking ? "Unit ini booking" : "Unit ini terjual"} — Tanya Unit Lain
-                  </a>
-                )}
+                <a
+                  href={waLink(
+                    `Halo, saya tertarik dengan unit ${u.unit} (Blok ${u.blok}, lantai ${u.floor}) di Bhumi Saka Arum. Mohon info ketersediaannya.`
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-13 min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-gold-400 px-6 text-sm font-bold text-navy-950 transition hover:bg-gold-300 active:scale-[0.98]"
+                >
+                  <WhatsappLogo size={18} weight="bold" />
+                  Pesan Unit {u.unit}
+                </a>
                 <BackLink
                   target="harga"
                   className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-navy-200 bg-white px-6 text-sm font-bold text-navy-900 transition hover:border-navy-300 active:scale-[0.98]"
@@ -266,7 +227,7 @@ export default async function UnitDetailPage({ params }: PageProps) {
                 className="w-full rounded-2xl object-cover ring-1 ring-navy-100"
               />
               <p className="mt-2 text-center text-xs font-semibold text-navy-800/70">
-                Posisi Blok {u.blok} pada siteplan — klik foto galeri untuk melihat seluruh unitnya
+                Posisi Blok {u.blok} pada siteplan Bhumi Saka Arum
               </p>
             </div>
           </div>

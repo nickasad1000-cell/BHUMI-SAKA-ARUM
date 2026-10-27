@@ -25,8 +25,7 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Rumah subsidi 2 LANTAI
-              <span className="block">Satu-satunya di Lumajang</span>
+              Rumah subsidi 2 lantai
               <span className="block">Hunian modern siap huni untuk keluarga Anda.</span>
             </p>
           </div>

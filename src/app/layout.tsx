@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Bhumi Saka Arum",
   },
   description:
-    "Rumah subsidi 2 lantai satu-satunya di Lumajang. Type 36, 2 kamar tidur, siap huni di Klampokarum — ±8 menit dari Alun-Alun Kota Lumajang.",
+    "Rumah subsidi 2 lantai di Klampokarum, Lumajang. Type 36, 2 kamar tidur, siap huni — ±8 menit dari Alun-Alun Kota Lumajang.",
   alternates: {
     canonical: "/",
   },
@@ -47,7 +47,7 @@ const jsonLd = {
   "@type": "Residence",
   name: "Bhumi Saka Arum",
   description:
-    "Perumahan rumah subsidi 2 lantai satu-satunya di Lumajang oleh PT. Lembayung Wanantara Padha.",
+    "Perumahan rumah subsidi 2 lantai di Lumajang oleh PT. Lembayung Wanantara Padha.",
   url: siteUrl,
   telephone: "+6281333372016",
   image: `${siteUrl}/images/og-image.jpg`,
