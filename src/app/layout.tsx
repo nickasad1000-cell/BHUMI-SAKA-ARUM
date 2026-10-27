@@ -13,7 +13,7 @@ const siteUrl = "https://bhumisakaarum.vercel.app";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    default: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     template: "%s | Bhumi Saka Arum",
   },
   description:
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     description:
       "Hunian modern 2 lantai dengan ruang lebih luas untuk keluarga Anda. Booking hanya Rp 100 ribu, gratis biaya realisasi dan pajak.",
     url: "/",
@@ -30,12 +30,12 @@ export const metadata: Metadata = {
     locale: "id_ID",
     type: "website",
     images: [
-      { url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang" },
+      { url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang" },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     description:
       "Hunian modern 2 lantai siap huni di Klampokarum, Lumajang. Booking hanya Rp 100 ribu.",
     images: ["/images/og-image.jpg"],

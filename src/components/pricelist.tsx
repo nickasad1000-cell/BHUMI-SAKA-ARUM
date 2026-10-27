@@ -13,21 +13,14 @@ export function Pricelist({ units }: { units: Unit[] }) {
   return (
     <section id="harga" className="scroll-mt-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="max-w-xl">
-          <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-            Pricelist Unit
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-navy-800/70">
-            Harga rumah subsidi{" "}
-            <strong className="font-bold text-navy-950">
-              {formatRupiah(166_000_000)}
-            </strong>{" "}
-            — pilih unit, lalu bayar peningkatan mutu kualitas sesuai unit
-            pilihan. Klik unit untuk melihat detail lengkap.
-          </p>
-        </div>
+        <h2 className="sr-only">Pricelist Unit</h2>
 
-        <div className="mt-8 flex flex-wrap items-center gap-4">
+        <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-navy-800 ring-1 ring-navy-100">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          {readyUnits.length} unit siap huni
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center gap-4">
           <div className="inline-flex rounded-full bg-navy-50 p-1">
             {([2, 1] as const).map((f) => (
               <button
@@ -45,10 +38,6 @@ export function Pricelist({ units }: { units: Unit[] }) {
               </button>
             ))}
           </div>
-          <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-navy-800 ring-1 ring-navy-100 sm:ml-auto">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            {readyUnits.length} unit siap huni
-          </p>
         </div>
 
         {rows.length === 0 ? (

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    name: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     short_name: "Bhumi Saka Arum",
     description:
       "Rumah subsidi 2 lantai di Lumajang. Type 36, siap huni di Klampokarum, Kec. Kunir.",
