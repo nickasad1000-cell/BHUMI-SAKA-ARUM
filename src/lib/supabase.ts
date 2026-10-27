@@ -35,9 +35,16 @@ function angka(value: number | string | null) {
   return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : null;
 }
 
-async function tarikUnit(): Promise<Unit[] | null> {
+const IS_BUILD = process.env.NEXT_PHASE === "phase-production-build";
+
+function gagalTracker(pesan: string): never {
+  console.error(`[units] ${pesan}`);
+  throw new Error(`[units] ${pesan}`);
+}
+
+async function tarikUnit(): Promise<Unit[]> {
   const token = process.env.PUBLIK_UNIT_TOKEN;
-  if (!token) return null;
+  if (!token) return gagalTracker("PUBLIK_UNIT_TOKEN belum diisi");
   try {
     const res = await fetch(`${TRACKER_URL}/api/publik/unit`, {
       headers: {
@@ -47,36 +54,62 @@ async function tarikUnit(): Promise<Unit[] | null> {
       next: { revalidate: 300 },
     });
     if (!res.ok) {
-      console.error("[units] tracker error:", res.status);
-      return null;
+      return gagalTracker(`tracker error: HTTP ${res.status}`);
     }
     const body = (await res.json()) as { data?: TrackerUnit[] };
     const rows = (body.data ?? []).filter(
       (row) => row.perumahan === PERUMAHAN && VALID_STATUS.has(row.status)
     );
     if (rows.length === 0) {
-      console.error("[units] tracker returned no rows, using fallback");
-      return null;
+      return gagalTracker("tracker tidak mengembalikan unit");
     }
-    const byKode = new Map(rows.map((row) => [kodeKatalog(row.kode), row]));
-    return FALLBACK_UNITS.map((unit) => {
-      const row = byKode.get(kodeKatalog(unit.unit));
-      if (!row) return unit;
-      return {
-        ...unit,
-        status: row.status,
-        persen: angka(row.persen_real),
-        foto: row.foto_url,
-      };
+
+    const byKode = new Map(
+      FALLBACK_UNITS.map((unit) => [kodeKatalog(unit.unit), unit])
+    );
+    const siapTanpaMeta = rows.filter(
+      (row) => row.status === "tersedia" && !byKode.has(kodeKatalog(row.kode))
+    );
+    if (siapTanpaMeta.length > 0) {
+      const daftar = siapTanpaMeta.map((row) => row.kode).join(", ");
+      if (IS_BUILD) {
+        gagalTracker(`unit siap huni belum ada di FALLBACK_UNITS: ${daftar}`);
+      }
+      console.error(
+        `[units] unit siap huni dilewati karena belum ada metadata: ${daftar}`
+      );
+    }
+
+    return rows.flatMap((row) => {
+      const unit = byKode.get(kodeKatalog(row.kode));
+      if (!unit) return [];
+      return [
+        {
+          ...unit,
+          status: row.status,
+          persen: angka(row.persen_real),
+          foto: row.foto_url,
+        },
+      ];
     });
   } catch (e) {
-    console.error("[units] tracker fetch failed, using fallback:", e);
-    return null;
+    if (e instanceof Error && e.message.startsWith("[units] ")) throw e;
+    return gagalTracker(
+      `tracker fetch gagal: ${e instanceof Error ? e.message : String(e)}`
+    );
   }
 }
 
 export async function getUnits(): Promise<Unit[]> {
-  return (await tarikUnit()) ?? FALLBACK_UNITS;
+  try {
+    return await tarikUnit();
+  } catch (e) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[units] memakai FALLBACK_UNITS saat development:", e);
+      return FALLBACK_UNITS;
+    }
+    throw e;
+  }
 }
 
 /** Status tampilan: nilai tracker yang valid. */

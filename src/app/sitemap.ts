@@ -3,20 +3,21 @@ import { getUnits } from "@/lib/supabase";
 import { isReady } from "@/lib/data";
 
 const BASE = "https://bhumisakaarum.vercel.app";
-const LAST_UPDATED = new Date("2026-08-28T05:00:00Z");
+
+export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const units = await getUnits();
   return [
     {
       url: BASE,
-      lastModified: LAST_UPDATED,
+      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     ...units.filter(isReady).map((u) => ({
       url: `${BASE}/unit/${u.unit.toLowerCase()}`,
-      lastModified: LAST_UPDATED,
+      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

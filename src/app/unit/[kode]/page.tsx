@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import { WhatsappLogo, CheckCircle, ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { Navbar } from "@/components/navbar";
@@ -23,21 +23,27 @@ interface PageProps {
 
 const SITE = "https://bhumisakaarum.vercel.app";
 
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   const units = await getUnits();
   return units.filter(isReady).map((u) => ({ kode: u.unit.toLowerCase() }));
 }
 
-async function getUnit(kode: string) {
+async function getUnitRecord(kode: string) {
   const units = await getUnits();
-  const unit = units.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
+  return units.find((u) => u.unit.toLowerCase() === kode.toLowerCase());
+}
+
+async function getUnit(kode: string) {
+  const unit = await getUnitRecord(kode);
   return unit && isReady(unit) ? unit : undefined;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { kode } = await params;
   const u = await getUnit(kode);
-  if (!u) return { title: "Unit tidak ditemukan" };
+  if (!u) return { title: "Unit tidak ditemukan", robots: { index: false } };
 
   const title = `Unit ${u.unit} — Rumah Subsidi ${u.floor === 2 ? "2 Lantai" : "Lantai 1"} Lumajang`;
   const description = `Unit ${u.unit} — rumah subsidi type 36, tanah ${String(u.land_area).replace(".", ",")} m² di Bhumi Saka Arum Klampokarum Lumajang. Harga ${formatRupiah(u.house_price)}, peningkatan mutu ${formatRupiah(u.dp_price)}.`;
@@ -68,8 +74,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function UnitDetailPage({ params }: PageProps) {
   const { kode } = await params;
-  const u = await getUnit(kode);
-  if (!u) notFound();
+  const unit = await getUnitRecord(kode);
+  if (!unit) notFound();
+  if (!isReady(unit)) redirect("/#harga");
+  const u = unit;
 
   const photos = GALLERY.map((g) => ({ ...g }));
 
