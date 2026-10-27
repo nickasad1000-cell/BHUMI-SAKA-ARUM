@@ -85,7 +85,7 @@ export function LeadForm() {
   return (
     <section id="kontak" className="scroll-mt-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">
               Konsultasi
