@@ -57,20 +57,16 @@ export function Navbar() {
           ariaLabel="Kembali ke atas"
           className="flex h-16 items-center gap-2.5"
         >
-          <span
-            className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-              solid ? "bg-navy-950" : "bg-white/15 backdrop-blur"
+          <Image
+            src="/images/logo.png"
+            alt="Logo Bhumi Saka Arum"
+            width={36}
+            height={36}
+            className={`h-9 w-9 rounded-lg ${
+              solid ? "ring-1 ring-navy-950/10" : "ring-1 ring-white/30"
             }`}
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Logo Bhumi Saka Arum"
-              width={22}
-              height={20}
-              className="h-5 w-auto"
-              priority
-            />
-          </span>
+            priority
+          />
           <span
             className={`text-sm font-extrabold tracking-tight ${
               solid ? "text-navy-950" : "text-white"

@@ -10,15 +10,13 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                <Image
-                  src="/images/logo.png"
-                  alt="Logo Bhumi Saka Arum"
-                  width={24}
-                  height={22}
-                  className="h-6 w-auto"
-                />
-              </span>
+              <Image
+                src="/images/logo.png"
+                alt="Logo Bhumi Saka Arum"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-lg ring-1 ring-white/20"
+              />
               <div>
                 <p className="text-sm font-extrabold">Bhumi Saka Arum</p>
                 <p className="text-xs text-white/60">{COMPANY}</p>
