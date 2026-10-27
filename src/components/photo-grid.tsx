@@ -51,7 +51,7 @@ export function PhotoGrid({
   columns = 4,
   sizes = "(max-width: 768px) 100vw, 50vw",
 }: {
-  photos: (LightboxPhoto & { wide?: boolean })[];
+  photos: LightboxPhoto[];
   columns?: 3 | 4;
   sizes?: string;
 }) {
@@ -96,18 +96,14 @@ export function PhotoGrid({
             type="button"
             onClick={() => setActive(i)}
             aria-label={`Perbesar foto: ${photo.alt}`}
-            className={`group relative overflow-hidden rounded-xl bg-navy-50 ${
-              photo.wide ? "col-span-2 aspect-[16/11]" : "aspect-[3/4]"
-            }`}
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-navy-50"
           >
             <Image
               src={photo.src}
               alt={photo.alt}
               fill
               sizes={sizes}
-              className={`object-cover transition-transform duration-500 group-hover:scale-[1.04] ${
-                photo.wide ? "object-[50%_65%]" : ""
-              }`}
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
             />
             <span className="absolute inset-0 bg-navy-950/0 transition-colors group-hover:bg-navy-950/15" />
           </button>

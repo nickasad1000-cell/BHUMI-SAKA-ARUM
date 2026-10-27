@@ -26,13 +26,12 @@ export function Hero() {
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-400">
               Klampokarum · Lumajang
             </p>
-            <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
               Rumah Subsidi <span className="text-gold-400">2 Lantai</span>
-              <span className="block">di Lumajang</span>
+              <span className="block">Satu-satunya di Lumajang</span>
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-navy-100 sm:text-lg">
-              Tipe 36 di Klampokarum, sekitar 8 menit dari Alun-Alun Kota
-              Lumajang.
+              8 menit dari Alun-Alun Kota Lumajang.
             </p>
             <p className="mt-4 inline-flex items-center gap-2.5 rounded-full bg-gold-400/10 px-5 py-3 text-sm font-extrabold text-gold-300 ring-1 ring-gold-400/50 sm:text-base">
               <Lightning size={20} weight="fill" className="text-gold-400" />

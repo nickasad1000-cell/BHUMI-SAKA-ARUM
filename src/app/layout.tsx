@@ -13,31 +13,31 @@ const siteUrl = "https://bhumisakaarum.vercel.app";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    default: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     template: "%s | Bhumi Saka Arum",
   },
   description:
-    "Rumah subsidi 2 lantai di Klampokarum, Lumajang. Tipe 36, 2 kamar tidur, sekitar 8 menit dari Alun-Alun Kota Lumajang.",
+    "Rumah subsidi 2 lantai satu-satunya di Lumajang. Tipe 36 di Klampokarum, 8 menit dari Alun-Alun Kota Lumajang.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     description:
-      "Rumah subsidi 2 lantai di Klampokarum, Lumajang. Tipe 36, booking Rp 100 ribu.",
+      "Rumah subsidi 2 lantai satu-satunya di Lumajang. Tipe 36, booking Rp 100 ribu.",
     url: "/",
     siteName: "Bhumi Saka Arum",
     locale: "id_ID",
     type: "website",
     images: [
-      { url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang" },
+      { url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang" },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai di Lumajang",
+    title: "Bhumi Saka Arum — Rumah Subsidi 2 Lantai Satu-satunya di Lumajang",
     description:
-      "Rumah subsidi 2 lantai di Klampokarum, Lumajang. Booking Rp 100 ribu.",
+      "Rumah subsidi 2 lantai satu-satunya di Lumajang. Booking Rp 100 ribu.",
     images: ["/images/og-image.jpg"],
   },
 };

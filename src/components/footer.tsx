@@ -25,7 +25,7 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Rumah subsidi 2 lantai di Klampokarum, Lumajang.
+              Rumah subsidi 2 lantai satu-satunya di Lumajang.
             </p>
           </div>
 

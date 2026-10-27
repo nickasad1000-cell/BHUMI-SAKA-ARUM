@@ -33,46 +33,29 @@ function StatusBadge({ status }: { status: UnitStatus }) {
   );
 }
 
+function unitNumber(unit: string) {
+  return Number(unit.replace(/\D/g, "")) || 0;
+}
+
 export function Pricelist({ units }: { units: Unit[] }) {
   const [floor, setFloor] = useState<1 | 2>(2);
 
-  const counts = units.reduce(
-    (acc, u) => {
-      acc.total += 1;
-      if (unitStatus(u) === "tersedia") acc.tersedia += 1;
-      else if (unitStatus(u) === "booking") acc.booking += 1;
-      else acc.terjual += 1;
-      return acc;
-    },
-    { total: 0, tersedia: 0, booking: 0, terjual: 0 }
-  );
-
-  const rows = units.filter((u) => u.floor === floor);
+  const rows = units
+    .filter((u) => u.floor === floor)
+    .sort(
+      (a, b) =>
+        a.blok.localeCompare(b.blok, "id") ||
+        unitNumber(a.unit) - unitNumber(b.unit)
+    );
 
   return (
     <section id="harga" className="scroll-mt-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
-              Daftar unit
-            </h2>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-              Status dan harga terbaru dari data pemasaran.
-            </p>
-          </div>
-          <p className="text-sm font-semibold text-navy-800">
-            {counts.total} unit
-            <span className="text-navy-800/40"> · </span>
-            {counts.tersedia} tersedia
-            <span className="text-navy-800/40"> · </span>
-            {counts.booking} booking
-            <span className="text-navy-800/40"> · </span>
-            {counts.terjual} terjual
-          </p>
-        </div>
+        <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
+          Daftar unit
+        </h2>
 
-        <div className="mt-5 flex flex-wrap items-center gap-4">
+        <div className="mt-6 flex flex-wrap items-center gap-4">
           <div className="inline-flex rounded-full bg-navy-50 p-1">
             {([2, 1] as const).map((f) => (
               <button
@@ -257,9 +240,7 @@ export function Pricelist({ units }: { units: Unit[] }) {
             listrik, dan sumur bor.
           </p>
           <p>
-            Booking Rp 100 ribu · Tanda jadi Rp 2.500.000 · Rumah hook/pojok
-            +Rp 5.000.000 · Harga sewaktu-waktu dapat berubah mengikuti
-            kebijakan pemerintah.
+            Harga sewaktu-waktu dapat berubah mengikuti kebijakan pemerintah.
           </p>
         </div>
       </div>

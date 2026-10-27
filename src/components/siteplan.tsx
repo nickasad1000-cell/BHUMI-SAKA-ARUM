@@ -1,3 +1,12 @@
+import {
+  Blueprint,
+  Door,
+  HouseLine,
+  Lightning,
+  PaintRoller,
+  Toilet,
+  Wall,
+} from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "./reveal";
 import { ZoomImage } from "./photo-grid";
 import {
@@ -5,6 +14,16 @@ import {
   KPR_EMPLOYEE,
   KPR_ENTREPRENEUR,
 } from "@/lib/data";
+
+const SPEC_ICONS = [
+  Wall,
+  Blueprint,
+  PaintRoller,
+  Door,
+  HouseLine,
+  Toilet,
+  Lightning,
+];
 
 function DocList({ title, items }: { title: string; items: string[] }) {
   return (
@@ -32,9 +51,6 @@ export function SitePlan() {
           <h2 className="text-3xl font-extrabold tracking-tight text-navy-950 sm:text-4xl">
             Siteplan &amp; KPR
           </h2>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-navy-800/70">
-            21 unit pada Blok A, B, dan C.
-          </p>
         </Reveal>
 
         <Reveal delay={0.08}>
@@ -66,16 +82,24 @@ export function SitePlan() {
             <h4 className="text-base font-extrabold text-navy-950">
               Spesifikasi bangunan
             </h4>
-            <ul className="mt-4 grid gap-x-8 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {BUILD_SPEC.map((s) => (
-                <li
-                  key={s}
-                  className="border-b border-navy-100 pb-2.5 text-sm text-navy-800/80"
-                >
-                  {s}
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {BUILD_SPEC.map((s, i) => {
+                const Icon = SPEC_ICONS[i] ?? Blueprint;
+                return (
+                  <div
+                    key={s}
+                    className="flex items-start gap-3 rounded-xl bg-white p-4 ring-1 ring-navy-100"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50 text-navy-700">
+                      <Icon size={18} weight="duotone" />
+                    </span>
+                    <p className="text-sm leading-relaxed text-navy-800/80">
+                      {s}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </Reveal>
       </div>
